@@ -1,0 +1,439 @@
+{
+ "actions": [],
+ "allow_bulk_edit": 1,
+ "allow_rename": 1,
+ "autoname": "hash",
+ "creation": "2026-10-08 04:57:15.293456",
+ "description": "One AI analysis of a lead. Records are append-only history; the latest is mirrored on the lead.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "lead",
+  "status",
+  "trigger",
+  "requested_by",
+  "cb1",
+  "classification",
+  "score",
+  "confidence",
+  "model_classification",
+  "cb2",
+  "contact",
+  "customer",
+  "deal",
+  "verzchat_conversation_id",
+  "findings_section",
+  "intent",
+  "service_interest",
+  "product_category",
+  "quantity",
+  "estimated_volume",
+  "cb3",
+  "origin",
+  "destination",
+  "expected_shipping_date",
+  "estimated_value",
+  "signals_section",
+  "buying_signals",
+  "negative_signals",
+  "cb4",
+  "missing_information",
+  "recommended_next_action",
+  "summary_section",
+  "summary",
+  "evidence",
+  "context_summary",
+  "audit_section",
+  "provider",
+  "model",
+  "prompt_version",
+  "analyzed_at",
+  "latency_ms",
+  "cb5",
+  "input_tokens",
+  "output_tokens",
+  "cost_usd",
+  "cb6",
+  "messages_analyzed",
+  "first_message_id",
+  "last_message_id",
+  "context_hash",
+  "previous_analysis",
+  "error_section",
+  "attempts",
+  "error",
+  "raw_response"
+ ],
+ "fields": [
+  {
+   "fieldname": "lead",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Lead",
+   "options": "CRM Lead",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "default": "Queued",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Analysis Status",
+   "options": "Queued\nRunning\nCompleted\nFailed\nSkipped"
+  },
+  {
+   "fieldname": "trigger",
+   "fieldtype": "Select",
+   "in_standard_filter": 1,
+   "label": "Trigger",
+   "options": "New Customer Messages\nIntent Keywords\nQuiet Conversation\nManual\nRe-analyse\nLead Created\nRetry"
+  },
+  {
+   "fieldname": "requested_by",
+   "fieldtype": "Link",
+   "label": "Requested By",
+   "options": "User"
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "classification",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Classification",
+   "options": "\nUnqualified\nNeeds Follow-up\nQualified\nHigh Value"
+  },
+  {
+   "fieldname": "score",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Score"
+  },
+  {
+   "fieldname": "confidence",
+   "fieldtype": "Percent",
+   "label": "Confidence"
+  },
+  {
+   "description": "What the model called it; the stored classification follows the configured score thresholds",
+   "fieldname": "model_classification",
+   "fieldtype": "Data",
+   "label": "Model's Own Label"
+  },
+  {
+   "fieldname": "cb2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "contact",
+   "fieldtype": "Link",
+   "label": "Contact",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Pakkmaxx Customer"
+  },
+  {
+   "fieldname": "deal",
+   "fieldtype": "Link",
+   "label": "Opportunity",
+   "options": "CRM Deal"
+  },
+  {
+   "fieldname": "verzchat_conversation_id",
+   "fieldtype": "Data",
+   "label": "VerzChat Conversation ID"
+  },
+  {
+   "fieldname": "findings_section",
+   "fieldtype": "Section Break",
+   "label": "Findings"
+  },
+  {
+   "fieldname": "intent",
+   "fieldtype": "Data",
+   "label": "Intent"
+  },
+  {
+   "fieldname": "service_interest",
+   "fieldtype": "Data",
+   "label": "Service Interest"
+  },
+  {
+   "fieldname": "product_category",
+   "fieldtype": "Data",
+   "label": "Product"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Data",
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "estimated_volume",
+   "fieldtype": "Data",
+   "label": "Estimated Volume"
+  },
+  {
+   "fieldname": "cb3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "origin",
+   "fieldtype": "Data",
+   "label": "Origin"
+  },
+  {
+   "fieldname": "destination",
+   "fieldtype": "Data",
+   "label": "Destination"
+  },
+  {
+   "fieldname": "expected_shipping_date",
+   "fieldtype": "Data",
+   "label": "Expected Shipping"
+  },
+  {
+   "fieldname": "estimated_value",
+   "fieldtype": "Data",
+   "label": "Estimated Value"
+  },
+  {
+   "fieldname": "signals_section",
+   "fieldtype": "Section Break",
+   "label": "Signals and Next Step"
+  },
+  {
+   "fieldname": "buying_signals",
+   "fieldtype": "Small Text",
+   "label": "Buying Signals"
+  },
+  {
+   "fieldname": "negative_signals",
+   "fieldtype": "Small Text",
+   "label": "Negative Signals"
+  },
+  {
+   "fieldname": "cb4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "missing_information",
+   "fieldtype": "Small Text",
+   "label": "Missing Information"
+  },
+  {
+   "fieldname": "recommended_next_action",
+   "fieldtype": "Small Text",
+   "label": "Recommended Next Action"
+  },
+  {
+   "fieldname": "summary_section",
+   "fieldtype": "Section Break",
+   "label": "Summary"
+  },
+  {
+   "fieldname": "summary",
+   "fieldtype": "Small Text",
+   "label": "Summary"
+  },
+  {
+   "fieldname": "evidence",
+   "fieldtype": "Small Text",
+   "label": "Evidence"
+  },
+  {
+   "description": "Compact memory of the relationship, reused for the next analysis instead of resending old messages",
+   "fieldname": "context_summary",
+   "fieldtype": "Small Text",
+   "label": "Running Conversation Summary"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "audit_section",
+   "fieldtype": "Section Break",
+   "label": "Audit"
+  },
+  {
+   "fieldname": "provider",
+   "fieldtype": "Data",
+   "label": "Provider"
+  },
+  {
+   "fieldname": "model",
+   "fieldtype": "Data",
+   "label": "Model"
+  },
+  {
+   "fieldname": "prompt_version",
+   "fieldtype": "Data",
+   "label": "Prompt Version"
+  },
+  {
+   "fieldname": "analyzed_at",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Analysed At"
+  },
+  {
+   "fieldname": "latency_ms",
+   "fieldtype": "Int",
+   "label": "Latency (ms)"
+  },
+  {
+   "fieldname": "cb5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "input_tokens",
+   "fieldtype": "Int",
+   "label": "Input Tokens"
+  },
+  {
+   "fieldname": "output_tokens",
+   "fieldtype": "Int",
+   "label": "Output Tokens"
+  },
+  {
+   "fieldname": "cost_usd",
+   "fieldtype": "Float",
+   "label": "Estimated Cost (USD)",
+   "precision": "6"
+  },
+  {
+   "fieldname": "cb6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "messages_analyzed",
+   "fieldtype": "Int",
+   "label": "Messages Analysed"
+  },
+  {
+   "fieldname": "first_message_id",
+   "fieldtype": "Data",
+   "label": "First Message ID"
+  },
+  {
+   "fieldname": "last_message_id",
+   "fieldtype": "Data",
+   "label": "Last Message ID"
+  },
+  {
+   "fieldname": "context_hash",
+   "fieldtype": "Data",
+   "label": "Context Hash"
+  },
+  {
+   "fieldname": "previous_analysis",
+   "fieldtype": "Link",
+   "label": "Previous Analysis",
+   "options": "Pakkmaxx AI Qualification"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "error_section",
+   "fieldtype": "Section Break",
+   "label": "Error"
+  },
+  {
+   "fieldname": "attempts",
+   "fieldtype": "Int",
+   "label": "Attempts"
+  },
+  {
+   "fieldname": "error",
+   "fieldtype": "Small Text",
+   "label": "Error"
+  },
+  {
+   "description": "Kept for a limited number of days (AI settings), then cleared",
+   "fieldname": "raw_response",
+   "fieldtype": "Code",
+   "label": "Raw Response"
+  }
+ ],
+ "grid_page_length": 50,
+ "in_create": 1,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-10-08 04:57:15.293456",
+ "modified_by": "Administrator",
+ "module": "Pakkmaxx CRM",
+ "name": "Pakkmaxx AI Qualification",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "CRM Administrator",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "CRM Manager",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales User",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "CRM Read Only",
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "classification"
+}

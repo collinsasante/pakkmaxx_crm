@@ -14,6 +14,27 @@ FREQUENCY = "\nOne-time\nOccasional\nQuarterly\nMonthly\nBi-weekly\nWeekly\nMult
 LIFECYCLE = "\nLead\nProspect\nQualified\nCustomer\nActive Customer\nRepeat Customer\nDormant\nLost"
 NOTE_TYPES = "General\nSales\nFollow-up\nAccount\nWhatsApp Conversation\nMeeting\nCall Summary"
 
+AI_CLASSES = "\nUnqualified\nNeeds Follow-up\nQualified\nHigh Value"
+
+# Written only by the AI service; never by users.
+AI_LEAD_FIELDS = (
+	"pkx_ai_classification",
+	"pkx_ai_score",
+	"pkx_ai_confidence",
+	"pkx_ai_status",
+	"pkx_ai_analyzed_at",
+	"pkx_ai_last_analysis",
+	"pkx_ai_next_action",
+	"pkx_ai_missing_information",
+	"pkx_ai_buying_signals",
+	"pkx_ai_summary",
+	"pkx_ai_pending_messages",
+	"pkx_ai_last_customer_message_at",
+	"pkx_ai_overridden_by",
+	"pkx_ai_overridden_on",
+	"pkx_ai_effective_classification",
+)
+
 # Server-computed fields: read-only in every UI and overwritten on save.
 COMPUTED_LEAD_FIELDS = (
 	"pkx_qualification_score",
@@ -25,6 +46,7 @@ COMPUTED_LEAD_FIELDS = (
 	"pkx_converted_on",
 	"lead_score",
 	"lead_temperature",
+	*AI_LEAD_FIELDS,
 )
 COMPUTED_DEAL_FIELDS = (
 	"pkx_weighted_value",
@@ -169,6 +191,43 @@ def get_custom_fields() -> dict:
 						description="Tick to save a lead that shares a phone, WhatsApp number or email with an existing record"),
 				]
 			),
+		],
+	)
+
+	lead += _chain(
+		"pkx_allow_duplicate",
+		[
+			dict(fieldname="pkx_ai_tab", label="AI Qualification", fieldtype="Tab Break"),
+			dict(fieldname="pkx_ai_classification", label="AI Classification", fieldtype="Select", options=AI_CLASSES,
+				read_only=1, in_standard_filter=1),
+			dict(fieldname="pkx_ai_score", label="AI Score", fieldtype="Int", read_only=1),
+			dict(fieldname="pkx_ai_confidence", label="AI Confidence", fieldtype="Percent", read_only=1),
+			dict(fieldname="pkx_ai_status", label="AI Status", fieldtype="Select",
+				options="\nNot Analysed\nPending\nAnalysed\nFailed", read_only=1),
+			dict(fieldname="pkx_ai_analyzed_at", label="AI Analysed At", fieldtype="Datetime", read_only=1),
+			dict(fieldname="pkx_ai_last_analysis", label="Latest AI Analysis", fieldtype="Link",
+				options="Pakkmaxx AI Qualification", read_only=1),
+			dict(fieldname="pkx_ai_cb1", fieldtype="Column Break"),
+			dict(fieldname="pkx_ai_next_action", label="AI Recommended Next Action", fieldtype="Small Text", read_only=1),
+			dict(fieldname="pkx_ai_missing_information", label="AI: Still Missing", fieldtype="Small Text", read_only=1),
+			dict(fieldname="pkx_ai_buying_signals", label="AI: Buying Signals", fieldtype="Small Text", read_only=1),
+			dict(fieldname="pkx_ai_summary", label="AI Summary", fieldtype="Small Text", read_only=1),
+			dict(fieldname="pkx_ai_review_section", label="Human Review", fieldtype="Section Break",
+				description="A human decision always wins and is never overwritten by later AI analyses"),
+			dict(fieldname="pkx_ai_human_classification", label="Human Classification", fieldtype="Select",
+				options=AI_CLASSES, in_standard_filter=1),
+			dict(fieldname="pkx_ai_human_score", label="Human Score", fieldtype="Int"),
+			dict(fieldname="pkx_ai_override_reason", label="Override Reason", fieldtype="Small Text",
+				mandatory_depends_on="eval:doc.pkx_ai_human_classification"),
+			dict(fieldname="pkx_ai_cb2", fieldtype="Column Break"),
+			dict(fieldname="pkx_ai_overridden_by", label="Overridden By", fieldtype="Link", options="User", read_only=1),
+			dict(fieldname="pkx_ai_overridden_on", label="Overridden On", fieldtype="Datetime", read_only=1),
+			dict(fieldname="pkx_ai_effective_classification", label="Qualification (Human or AI)", fieldtype="Select",
+				options=AI_CLASSES, read_only=1, in_standard_filter=1),
+			dict(fieldname="pkx_ai_pending_messages", label="New Customer Messages Since AI Analysis", fieldtype="Int",
+				read_only=1, hidden=1),
+			dict(fieldname="pkx_ai_last_customer_message_at", label="Last Customer Message", fieldtype="Datetime",
+				read_only=1, hidden=1),
 		],
 	)
 

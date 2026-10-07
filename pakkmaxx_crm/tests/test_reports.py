@@ -18,6 +18,8 @@ REPORTS = {
 		"Source", "Detail")],
 	"Pakkmaxx Customers": [{}, {"group_by": "Source"}, {"group_by": "Segment"}, {"group_by": "Lifecycle Stage"}],
 	"Pakkmaxx Sales Performance": [{}],
+	"Pakkmaxx AI Qualification Overview": [{}],
+	"Pakkmaxx AI vs Human": [{}, {"only_overrides": 1}],
 }
 
 

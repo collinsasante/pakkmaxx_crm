@@ -33,6 +33,7 @@ permission_query_conditions = {
 	"CRM Call Log": "pakkmaxx_crm.permissions.call_log_query",
 	"Contact": "pakkmaxx_crm.permissions.contact_query",
 	"CRM Organization": "pakkmaxx_crm.permissions.organization_query",
+	"Pakkmaxx AI Qualification": "pakkmaxx_crm.permissions.ai_qualification_query",
 }
 
 has_permission = {
@@ -42,6 +43,7 @@ has_permission = {
 	"CRM Call Log": "pakkmaxx_crm.permissions.call_log_permission",
 	"Contact": "pakkmaxx_crm.permissions.contact_permission",
 	"CRM Organization": "pakkmaxx_crm.permissions.organization_permission",
+	"Pakkmaxx AI Qualification": "pakkmaxx_crm.permissions.ai_qualification_permission",
 	"CRM Lead Status": "pakkmaxx_crm.permissions.config_permission",
 	"CRM Deal Status": "pakkmaxx_crm.permissions.config_permission",
 	"CRM Lead Source": "pakkmaxx_crm.permissions.config_permission",
@@ -59,6 +61,7 @@ doc_events = {
 		"before_validate": "pakkmaxx_crm.events.lead.before_validate",
 		"validate": "pakkmaxx_crm.events.lead.validate",
 		"on_update": "pakkmaxx_crm.events.lead.on_update",
+		"after_insert": "pakkmaxx_crm.ai.triggers.on_lead_insert",
 		"on_change": "pakkmaxx_crm.events.lead.on_change",
 	},
 	"CRM Deal": {
@@ -100,10 +103,14 @@ doc_events = {
 scheduler_events = {
 	"cron": {
 		"*/5 * * * *": ["pakkmaxx_crm.followups.send_due_reminders"],
+		"*/15 * * * *": ["pakkmaxx_crm.ai.triggers.analyze_quiet_conversations"],
 		"0 7 * * *": ["pakkmaxx_crm.followups.send_daily_digest"],
 	},
-	"daily_long": ["pakkmaxx_crm.customers.refresh_all_lifecycles"],
+	"daily_long": ["pakkmaxx_crm.customers.refresh_all_lifecycles", "pakkmaxx_crm.ai.service.clear_old_raw_responses"],
 }
+
+# VerzChat (verzchat_crm) calls these after each processed message event
+verzchat_message_handlers = ["pakkmaxx_crm.ai.triggers.on_verzchat_message"]
 
 # Testing
 # -------

@@ -203,7 +203,17 @@ def setup_currency():
 	frappe.db.set_default("country", frappe.db.get_default("country") or "Ghana")
 
 
+def ensure_settings_defaults():
+	"""Singles only get field defaults when the form is saved; fill fields that were never stored
+	(e.g. new AI settings on an existing site). Never overwrites a stored value."""
+	stored = {r[0] for r in frappe.db.sql("select field from `tabSingles` where doctype = 'Pakkmaxx CRM Settings'")}
+	for df in frappe.get_meta("Pakkmaxx CRM Settings").fields:
+		if df.default is not None and df.fieldname not in stored and df.fieldtype not in ("Table", "Password"):
+			frappe.db.set_single_value("Pakkmaxx CRM Settings", df.fieldname, df.default, update_modified=False)
+
+
 def setup_settings():
+	ensure_settings_defaults()
 	settings = frappe.get_single("Pakkmaxx CRM Settings")
 	if settings.scoring_rules:
 		return

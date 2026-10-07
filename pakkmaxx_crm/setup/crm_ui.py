@@ -39,6 +39,16 @@ LEAD_SECTIONS = [
 		opened=False),
 ]
 
+LEAD_SECTIONS += [
+	_section("pkx_ai_section", "AI Qualification", [_col("pkx_ai_col", [
+		"pkx_ai_effective_classification", "pkx_ai_classification", "pkx_ai_score", "pkx_ai_confidence",
+		"pkx_ai_status", "pkx_ai_next_action", "pkx_ai_missing_information", "pkx_ai_buying_signals",
+		"pkx_ai_summary", "pkx_ai_analyzed_at"])]),
+	_section("pkx_ai_review_section", "Human Review", [_col("pkx_ai_review_col", [
+		"pkx_ai_human_classification", "pkx_ai_human_score", "pkx_ai_override_reason",
+		"pkx_ai_overridden_by", "pkx_ai_overridden_on"])], opened=False),
+]
+
 DEAL_SECTIONS = [
 	_section("pkx_shipment_section", "Shipment Requirement", [_col("pkx_shipment_col", [
 		"pkx_customer", "pkx_services", "pkx_product_categories", "pkx_origin_city", "pkx_destination_city",
@@ -168,7 +178,7 @@ def _prepend_fields(layout: list, fields: list[str]):
 # CRM Form Scripts: click-to-chat / click-to-call buttons on lead & deal pages
 # ---------------------------------------------------------------------------
 
-CONTACT_ACTIONS_SCRIPT = """class {cls} {{
+OLD_CONTACT_ACTIONS_SCRIPT =  """class {cls} {{
     onRender() {{
         const doc = this.doc
         const digits = (value) => (value || '').replace(/[^0-9]/g, '')
@@ -202,10 +212,50 @@ CONTACT_ACTIONS_SCRIPT = """class {cls} {{
 }}"""
 
 
+CONTACT_ACTIONS_SCRIPT = """class {cls} {{
+    onRender() {{
+        const doc = this.doc
+        const digits = (value) => (value || '').replace(/[^0-9]/g, '')
+        const ours = ['WhatsApp', 'Call']
+        this.actions = [
+            ...(this.actions || []).filter((a) => !ours.includes(a.label)),
+            {{
+                label: 'WhatsApp',
+                icon: 'message-circle',
+                onClick: () => {{
+                    const number = digits(doc.pkx_whatsapp_no || doc.mobile_no)
+                    if (!number) {{
+                        this.toast.error('No WhatsApp number on this record')
+                        return
+                    }}
+                    window.open('https://wa.me/' + number, '_blank', 'noopener')
+                }},
+            }},
+            {{
+                label: 'Call',
+                icon: 'phone',
+                onClick: () => {{
+                    const number = (doc.mobile_no || doc.phone || '').replace(/[^0-9+]/g, '')
+                    if (!number) {{
+                        this.toast.error('No phone number on this record')
+                        return
+                    }}
+                    window.location.href = 'tel:' + number
+                }},
+            }},
+        ]
+    }}
+}}"""
+
+
 def setup_form_scripts():
 	for dt, cls in (("CRM Lead", "CRMLead"), ("CRM Deal", "CRMDeal")):
 		name = f"Pakkmaxx Contact Actions - {dt}"
 		if frappe.db.exists("CRM Form Script", name):
+			# upgrade only if nobody edited it: the old version replaced other scripts' actions
+			current = frappe.db.get_value("CRM Form Script", name, "script")
+			if current == OLD_CONTACT_ACTIONS_SCRIPT.format(cls=cls):
+				frappe.db.set_value("CRM Form Script", name, "script", CONTACT_ACTIONS_SCRIPT.format(cls=cls))
 			continue
 		frappe.get_doc(
 			{
@@ -218,3 +268,30 @@ def setup_form_scripts():
 				"script": CONTACT_ACTIONS_SCRIPT.format(cls=cls),
 			}
 		).insert(ignore_permissions=True)
+
+
+AI_ACTIONS_SCRIPT = """class CRMLead {
+    onRender() {
+        const lead = this.doc.name
+        const run = async (reanalyze) => {
+            const r = await this.call('pakkmaxx_crm.ai.api.analyze_lead', { lead, reanalyze })
+            if (r && r.queued) this.toast.success('AI analysis queued - results appear in the AI Qualification section shortly')
+            else this.toast.error((r && r.message) || 'AI analysis is not available')
+        }
+        this.actions = [
+            ...(this.actions || []).filter((a) => !['Analyze Lead', 'Re-analyse'].includes(a.label)),
+            { label: 'Analyze Lead', icon: 'sparkles', onClick: () => run(false) },
+            { label: 'Re-analyse', icon: 'refresh-cw', onClick: () => run(true) },
+        ]
+    }
+}"""
+
+
+def setup_ai_form_script():
+	name = "Pakkmaxx AI Actions - CRM Lead"
+	if frappe.db.exists("CRM Form Script", name):
+		return
+	frappe.get_doc(
+		{"doctype": "CRM Form Script", "name": name, "dt": "CRM Lead", "view": "Form", "enabled": 1, "is_standard": 0,
+			"script": AI_ACTIONS_SCRIPT}
+	).insert(ignore_permissions=True)

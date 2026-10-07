@@ -70,7 +70,33 @@ def validate(doc, method=None):
 		validate_status_change(doc)
 
 	doc.pkx_lifecycle_stage = lifecycle_stage(doc)
+	apply_ai_override(doc)
 	check_lead_duplicates(doc)
+
+
+def apply_ai_override(doc):
+	"""Human qualification decisions: reason required, stamped by the server, never replaced by AI runs."""
+	if not doc.meta.has_field("pkx_ai_human_classification"):
+		return
+	before = doc.get_doc_before_save() if not doc.is_new() else None
+	changed = any(
+		doc.get(f) != (before.get(f) if before else None)
+		for f in ("pkx_ai_human_classification", "pkx_ai_human_score", "pkx_ai_override_reason")
+	)
+	if doc.pkx_ai_human_score not in (None, "") and not 0 <= int(doc.pkx_ai_human_score) <= 100:
+		frappe.throw(_("Human score must be between 0 and 100"))
+	if doc.pkx_ai_human_classification:
+		if not (doc.pkx_ai_override_reason or "").strip():
+			frappe.throw(_("Please give the reason for the human qualification decision."), title=_("Reason required"))
+		if changed:
+			doc.pkx_ai_overridden_by = frappe.session.user
+			doc.pkx_ai_overridden_on = frappe.utils.now_datetime()
+	elif changed:
+		doc.pkx_ai_human_score = None
+		doc.pkx_ai_override_reason = None
+		doc.pkx_ai_overridden_by = None
+		doc.pkx_ai_overridden_on = None
+	doc.pkx_ai_effective_classification = doc.pkx_ai_human_classification or doc.get("pkx_ai_classification")
 
 
 def validate_status_change(doc):

@@ -10,7 +10,7 @@ from frappe.utils import flt
 from pakkmaxx_crm.reporting import WON, deal_rows, ghs, lead_rows, status_types
 
 
-METRICS = ("leads", "contacted", "qualified", "opportunities", "won", "customers", "pipeline_value", "won_value")
+METRICS = ("leads", "contacted", "qualified", "ai_qualified", "opportunities", "won", "customers", "pipeline_value", "won_value")
 
 
 def execute(filters=None):
@@ -31,6 +31,8 @@ def execute(filters=None):
 			r["contacted"] += 1
 		if lead.converted or lead.status in ("Qualified", "Proposal/Quote Requested", "Negotiation"):
 			r["qualified"] += 1
+		if lead.get("pkx_ai_effective_classification") in ("Qualified", "High Value"):
+			r["ai_qualified"] += 1
 		deals = deals_by_lead.get(lead.name, [])
 		r["opportunities"] += len(deals)
 		for d in deals:
@@ -59,6 +61,7 @@ def execute(filters=None):
 		{"fieldname": "leads", "label": _("Leads"), "fieldtype": "Int", "width": 80},
 		{"fieldname": "contacted", "label": _("Contacted"), "fieldtype": "Int", "width": 95},
 		{"fieldname": "qualified", "label": _("Qualified"), "fieldtype": "Int", "width": 90},
+		{"fieldname": "ai_qualified", "label": _("AI Qualified / High Value"), "fieldtype": "Int", "width": 170},
 		{"fieldname": "opportunities", "label": _("Opportunities"), "fieldtype": "Int", "width": 110},
 		{"fieldname": "won", "label": _("Won"), "fieldtype": "Int", "width": 70},
 		{"fieldname": "customers", "label": _("Customers"), "fieldtype": "Int", "width": 95},

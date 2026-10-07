@@ -24,7 +24,37 @@
   "high_value_threshold",
   "data_tab",
   "default_country_code",
-  "block_duplicate_leads"
+  "block_duplicate_leads",
+  "ai_tab",
+  "ai_enabled",
+  "ai_provider",
+  "ai_model",
+  "ai_base_url",
+  "ai_api_key",
+  "ai_cb1",
+  "ai_temperature",
+  "ai_max_output_tokens",
+  "ai_timeout_seconds",
+  "ai_cost_input_per_million",
+  "ai_cost_output_per_million",
+  "ai_thresholds_section",
+  "ai_needs_follow_up_from",
+  "ai_qualified_from",
+  "ai_high_value_from",
+  "ai_triggers_section",
+  "ai_auto_analysis",
+  "ai_min_customer_messages",
+  "ai_trigger_keywords",
+  "ai_cb2",
+  "ai_quiet_minutes",
+  "ai_cooldown_minutes",
+  "ai_analyze_manual_leads",
+  "ai_context_section",
+  "ai_max_messages",
+  "ai_max_chars_per_message",
+  "ai_cb3",
+  "ai_redact",
+  "ai_keep_raw_days"
  ],
  "fields": [
   {
@@ -144,13 +174,190 @@
    "fieldname": "block_duplicate_leads",
    "fieldtype": "Check",
    "label": "Block Duplicate Leads"
+  },
+  {
+   "fieldname": "ai_tab",
+   "fieldtype": "Tab Break",
+   "label": "AI Qualification"
+  },
+  {
+   "default": "0",
+   "description": "Off: no AI jobs are queued and no requests are sent to the AI provider. The CRM works normally.",
+   "fieldname": "ai_enabled",
+   "fieldtype": "Check",
+   "label": "Enable AI Lead Qualification"
+  },
+  {
+   "default": "DeepSeek",
+   "fieldname": "ai_provider",
+   "fieldtype": "Select",
+   "label": "AI Provider",
+   "options": "DeepSeek"
+  },
+  {
+   "default": "deepseek-flash",
+   "description": "DeepSeek model id, e.g. deepseek-flash (low cost) or deepseek-v4-pro",
+   "fieldname": "ai_model",
+   "fieldtype": "Data",
+   "label": "Model"
+  },
+  {
+   "default": "https://api.deepseek.com",
+   "fieldname": "ai_base_url",
+   "fieldtype": "Data",
+   "label": "API Base URL"
+  },
+  {
+   "description": "Stored encrypted. Alternatively set deepseek_api_key in site_config.json or the DEEPSEEK_API_KEY environment variable (these take precedence).",
+   "fieldname": "ai_api_key",
+   "fieldtype": "Password",
+   "label": "API Key"
+  },
+  {
+   "fieldname": "ai_cb1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0.1",
+   "fieldname": "ai_temperature",
+   "fieldtype": "Float",
+   "label": "Temperature"
+  },
+  {
+   "default": "1200",
+   "fieldname": "ai_max_output_tokens",
+   "fieldtype": "Int",
+   "label": "Max Output Tokens"
+  },
+  {
+   "default": "45",
+   "fieldname": "ai_timeout_seconds",
+   "fieldtype": "Int",
+   "label": "Timeout (seconds)"
+  },
+  {
+   "default": "0.3",
+   "fieldname": "ai_cost_input_per_million",
+   "fieldtype": "Float",
+   "label": "Input Cost per 1M Tokens (USD)"
+  },
+  {
+   "default": "1.2",
+   "fieldname": "ai_cost_output_per_million",
+   "fieldtype": "Float",
+   "label": "Output Cost per 1M Tokens (USD)"
+  },
+  {
+   "description": "Below 'Needs Follow-up from' is Unqualified",
+   "fieldname": "ai_thresholds_section",
+   "fieldtype": "Section Break",
+   "label": "Classification Thresholds (score 0-100)"
+  },
+  {
+   "default": "30",
+   "fieldname": "ai_needs_follow_up_from",
+   "fieldtype": "Int",
+   "label": "Needs Follow-up from"
+  },
+  {
+   "default": "60",
+   "fieldname": "ai_qualified_from",
+   "fieldtype": "Int",
+   "label": "Qualified from"
+  },
+  {
+   "default": "80",
+   "fieldname": "ai_high_value_from",
+   "fieldtype": "Int",
+   "label": "High Value from"
+  },
+  {
+   "fieldname": "ai_triggers_section",
+   "fieldtype": "Section Break",
+   "label": "When to Analyse"
+  },
+  {
+   "default": "1",
+   "fieldname": "ai_auto_analysis",
+   "fieldtype": "Check",
+   "label": "Analyse Automatically"
+  },
+  {
+   "default": "3",
+   "fieldname": "ai_min_customer_messages",
+   "fieldtype": "Int",
+   "label": "After This Many New Customer Messages"
+  },
+  {
+   "default": "price, cost, how much, rate, quote, quotation, shipping, ship, freight, sea, air, cbm, carton, cartons, kg, warehouse, delivery, deliver, import, container, pick up",
+   "description": "Comma separated. Analysis still waits for the cooldown and only runs when there are new messages.",
+   "fieldname": "ai_trigger_keywords",
+   "fieldtype": "Small Text",
+   "label": "Or When a Customer Message Mentions"
+  },
+  {
+   "fieldname": "ai_cb2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "120",
+   "fieldname": "ai_quiet_minutes",
+   "fieldtype": "Int",
+   "label": "Or When the Conversation Has Been Quiet for (minutes)"
+  },
+  {
+   "default": "30",
+   "fieldname": "ai_cooldown_minutes",
+   "fieldtype": "Int",
+   "label": "Minimum Minutes Between Automatic Analyses"
+  },
+  {
+   "default": "0",
+   "description": "Uses the lead's CRM fields only when there is no conversation",
+   "fieldname": "ai_analyze_manual_leads",
+   "fieldtype": "Check",
+   "label": "Analyse Leads Created Manually"
+  },
+  {
+   "fieldname": "ai_context_section",
+   "fieldtype": "Section Break",
+   "label": "Context and Privacy"
+  },
+  {
+   "default": "40",
+   "fieldname": "ai_max_messages",
+   "fieldtype": "Int",
+   "label": "Recent Messages Sent to the AI"
+  },
+  {
+   "default": "800",
+   "fieldname": "ai_max_chars_per_message",
+   "fieldtype": "Int",
+   "label": "Max Characters per Message"
+  },
+  {
+   "fieldname": "ai_cb3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "ai_redact",
+   "fieldtype": "Check",
+   "label": "Redact Phone Numbers, Emails and Codes"
+  },
+  {
+   "default": "14",
+   "description": "Raw responses help debugging; structured results are kept permanently",
+   "fieldname": "ai_keep_raw_days",
+   "fieldtype": "Int",
+   "label": "Keep Raw AI Responses (days)"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-10-07 02:18:32.271323",
+ "modified": "2026-10-08 04:57:15.079716",
  "modified_by": "Administrator",
  "module": "Pakkmaxx CRM",
  "name": "Pakkmaxx CRM Settings",
