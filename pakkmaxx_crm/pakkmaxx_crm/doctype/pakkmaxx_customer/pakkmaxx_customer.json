@@ -1,0 +1,447 @@
+{
+ "actions": [],
+ "allow_bulk_edit": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-10-07 02:18:32.316061",
+ "description": "A Pakkmaxx customer (individual or business). Created when an opportunity is won; the anchor future shipment, invoice and portal modules link to.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "customer_name",
+  "customer_type",
+  "business_type",
+  "cb1",
+  "lifecycle_stage",
+  "sales_rep",
+  "disabled",
+  "contact_section",
+  "contact",
+  "organization",
+  "preferred_contact_method",
+  "cb2",
+  "mobile_no",
+  "whatsapp_no",
+  "email",
+  "cb3",
+  "country",
+  "city",
+  "location",
+  "classification_section",
+  "segments",
+  "services",
+  "cb4",
+  "product_categories",
+  "industry",
+  "acquisition_section",
+  "source",
+  "campaign",
+  "cb5",
+  "original_lead",
+  "first_deal",
+  "cb6",
+  "lead_created_on",
+  "days_to_convert",
+  "stats_section",
+  "first_won_on",
+  "last_won_on",
+  "cb7",
+  "won_deals_count",
+  "open_deals_count",
+  "cb8",
+  "lifetime_value",
+  "last_activity_on",
+  "next_follow_up_on",
+  "timeline_tab",
+  "timeline_html",
+  "integration_tab",
+  "integration_note",
+  "portal_user"
+ ],
+ "fields": [
+  {
+   "default": "PKX-CUS-.#####",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Series",
+   "options": "PKX-CUS-.#####",
+   "reqd": 1
+  },
+  {
+   "bold": 1,
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Customer Name",
+   "reqd": 1
+  },
+  {
+   "default": "Individual",
+   "fieldname": "customer_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Customer Type",
+   "options": "Individual\nBusiness"
+  },
+  {
+   "fieldname": "business_type",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Business Type",
+   "options": "Pakkmaxx Business Type"
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Customer",
+   "fieldname": "lifecycle_stage",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Lifecycle Stage",
+   "options": "Customer\nActive Customer\nRepeat Customer\nDormant",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sales_rep",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Sales Representative",
+   "options": "User"
+  },
+  {
+   "default": "0",
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  },
+  {
+   "fieldname": "contact_section",
+   "fieldtype": "Section Break",
+   "label": "Contact"
+  },
+  {
+   "fieldname": "contact",
+   "fieldtype": "Link",
+   "label": "Primary Contact",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "organization",
+   "fieldtype": "Link",
+   "label": "Organization",
+   "options": "CRM Organization"
+  },
+  {
+   "fieldname": "preferred_contact_method",
+   "fieldtype": "Select",
+   "label": "Preferred Contact Method",
+   "options": "\nWhatsApp\nPhone Call\nSMS\nEmail\nIn Person"
+  },
+  {
+   "fieldname": "cb2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mobile_no",
+   "fieldtype": "Data",
+   "label": "Mobile No",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "whatsapp_no",
+   "fieldtype": "Data",
+   "label": "WhatsApp No",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "cb3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Ghana",
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "in_standard_filter": 1,
+   "label": "City"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location / Area"
+  },
+  {
+   "fieldname": "classification_section",
+   "fieldtype": "Section Break",
+   "label": "Classification"
+  },
+  {
+   "fieldname": "segments",
+   "fieldtype": "Table MultiSelect",
+   "label": "Segments",
+   "options": "Pakkmaxx Customer Segment Item"
+  },
+  {
+   "fieldname": "services",
+   "fieldtype": "Table MultiSelect",
+   "label": "Services Used / Interested",
+   "options": "Pakkmaxx Service Item"
+  },
+  {
+   "fieldname": "cb4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "product_categories",
+   "fieldtype": "Table MultiSelect",
+   "label": "Product Categories",
+   "options": "Pakkmaxx Product Category Item"
+  },
+  {
+   "fieldname": "industry",
+   "fieldtype": "Link",
+   "label": "Industry",
+   "options": "CRM Industry"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "acquisition_section",
+   "fieldtype": "Section Break",
+   "label": "Acquisition"
+  },
+  {
+   "fieldname": "source",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Source",
+   "options": "CRM Lead Source",
+   "read_only": 1
+  },
+  {
+   "fieldname": "campaign",
+   "fieldtype": "Link",
+   "label": "Campaign",
+   "options": "UTM Campaign",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "original_lead",
+   "fieldtype": "Link",
+   "label": "Original Lead",
+   "options": "CRM Lead",
+   "read_only": 1
+  },
+  {
+   "fieldname": "first_deal",
+   "fieldtype": "Link",
+   "label": "First Opportunity",
+   "options": "CRM Deal",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "lead_created_on",
+   "fieldtype": "Datetime",
+   "label": "Lead Created On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "days_to_convert",
+   "fieldtype": "Int",
+   "label": "Days Lead to Customer",
+   "read_only": 1
+  },
+  {
+   "fieldname": "stats_section",
+   "fieldtype": "Section Break",
+   "label": "Relationship Stats"
+  },
+  {
+   "fieldname": "first_won_on",
+   "fieldtype": "Date",
+   "label": "Customer Since",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_won_on",
+   "fieldtype": "Date",
+   "label": "Last Won Opportunity",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "won_deals_count",
+   "fieldtype": "Int",
+   "label": "Won Opportunities",
+   "read_only": 1
+  },
+  {
+   "fieldname": "open_deals_count",
+   "fieldtype": "Int",
+   "label": "Open Opportunities",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "lifetime_value",
+   "fieldtype": "Currency",
+   "label": "Lifetime Won Value",
+   "options": "GHS",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_activity_on",
+   "fieldtype": "Datetime",
+   "label": "Last Activity",
+   "read_only": 1
+  },
+  {
+   "fieldname": "next_follow_up_on",
+   "fieldtype": "Datetime",
+   "label": "Next Follow-up",
+   "read_only": 1
+  },
+  {
+   "fieldname": "timeline_tab",
+   "fieldtype": "Tab Break",
+   "label": "Activity"
+  },
+  {
+   "fieldname": "timeline_html",
+   "fieldtype": "HTML",
+   "label": "Activity Timeline"
+  },
+  {
+   "fieldname": "integration_tab",
+   "fieldtype": "Tab Break",
+   "label": "Integrations"
+  },
+  {
+   "fieldname": "integration_note",
+   "fieldtype": "HTML",
+   "options": "<p class='text-muted'>Reserved for future Pakkmaxx modules (shipments, packages, invoices, customer portal). They should link to this customer by its ID.</p>"
+  },
+  {
+   "description": "Reserved for the future customer portal",
+   "fieldname": "portal_user",
+   "fieldtype": "Link",
+   "label": "Portal User",
+   "options": "User",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-10-07 02:18:32.316061",
+ "modified_by": "Administrator",
+ "module": "Pakkmaxx CRM",
+ "name": "Pakkmaxx Customer",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "CRM Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "CRM Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "CRM Read Only"
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "search_fields": "customer_name,mobile_no,whatsapp_no,email",
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "customer_name",
+ "track_changes": 1
+}
