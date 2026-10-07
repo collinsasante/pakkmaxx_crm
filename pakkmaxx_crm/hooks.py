@@ -58,9 +58,11 @@ doc_events = {
 	"CRM Lead": {
 		"before_validate": "pakkmaxx_crm.events.lead.before_validate",
 		"validate": "pakkmaxx_crm.events.lead.validate",
+		"on_update": "pakkmaxx_crm.events.lead.on_update",
 		"on_change": "pakkmaxx_crm.events.lead.on_change",
 	},
 	"CRM Deal": {
+		"before_validate": "pakkmaxx_crm.events.deal.before_validate",
 		"validate": "pakkmaxx_crm.events.deal.validate",
 		"after_insert": "pakkmaxx_crm.events.deal.after_insert",
 		"on_update": "pakkmaxx_crm.events.deal.on_update",

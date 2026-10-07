@@ -76,3 +76,27 @@ def add_info_comment(doctype: str, name: str, text: str):
 			"content": text,
 		}
 	).insert(ignore_permissions=True)
+
+
+def revoke_previous_owner(doc, fieldname: str):
+	"""On reassignment, the previous owner loses the assignment and share that gave them access.
+
+	Frappe CRM adds the new owner but leaves the old one assigned."""
+	if doc.is_new() or not doc.has_value_changed(fieldname):
+		return
+	before = doc.get_doc_before_save()
+	old_owner = before.get(fieldname) if before else None
+	if not old_owner or old_owner == doc.get(fieldname):
+		return
+	for todo in frappe.get_all(
+		"ToDo",
+		filters={"reference_type": doc.doctype, "reference_name": doc.name, "allocated_to": old_owner,
+			"status": "Open"},
+		pluck="name",
+	):
+		frappe.db.set_value("ToDo", todo, "status", "Cancelled")
+	frappe.share.remove(doc.doctype, doc.name, old_owner, flags={"ignore_share_permission": True})
+	frappe.db.set_value(doc.doctype, doc.name, "_assign",
+		frappe.as_json([u for u in frappe.parse_json(frappe.db.get_value(doc.doctype, doc.name, "_assign") or "[]")
+			if u != old_owner]), update_modified=False)
+	add_info_comment(doc.doctype, doc.name, _("Reassigned from {0} to {1}").format(old_owner, doc.get(fieldname) or "-"))

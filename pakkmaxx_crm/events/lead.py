@@ -2,7 +2,7 @@ import frappe
 from frappe import _
 
 from pakkmaxx_crm.duplicates import check_lead_duplicates
-from pakkmaxx_crm.events.common import guard_owner_field, protect_fields
+from pakkmaxx_crm.events.common import guard_owner_field, protect_fields, revoke_previous_owner
 from pakkmaxx_crm.scoring import apply_lead_score, apply_qualification_score, validate_can_qualify
 from pakkmaxx_crm.setup.custom_fields import COMPUTED_LEAD_FIELDS
 from pakkmaxx_crm.utils import normalize_email, normalize_phone
@@ -41,6 +41,16 @@ def lifecycle_stage(doc) -> str:
 
 
 def before_validate(doc, method=None):
+	# before Frappe CRM's validate, which assigns/shares on an owner change
+	guard_owner_field(doc, "lead_owner", _("Lead Owner"))
+	_map_unqualified_reason(doc)
+
+
+def on_update(doc, method=None):
+	revoke_previous_owner(doc, "lead_owner")
+
+
+def _map_unqualified_reason(doc):
 	"""Unqualified is a Lost-type status in Frappe CRM, which demands a lost reason.
 	Map the Pakkmaxx unqualified reason onto it so users give the reason only once."""
 	if doc.status == "Unqualified" and (doc.pkx_unqualified_reason or "").strip():
@@ -52,7 +62,6 @@ def before_validate(doc, method=None):
 def validate(doc, method=None):
 	normalize_contact_fields(doc)
 	protect_fields(doc, COMPUTED_LEAD_FIELDS)
-	guard_owner_field(doc, "lead_owner", _("Lead Owner"))
 
 	apply_qualification_score(doc)
 	apply_lead_score(doc)

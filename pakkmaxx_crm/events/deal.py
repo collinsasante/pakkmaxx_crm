@@ -3,12 +3,23 @@ from frappe import _
 from frappe.utils import flt, now_datetime
 
 from pakkmaxx_crm.customers import deal_status_type, ensure_customer_for_deal, recompute_customer
-from pakkmaxx_crm.events.common import add_info_comment, guard_owner_field, is_system_update, protect_fields
+from pakkmaxx_crm.events.common import (
+	add_info_comment,
+	guard_owner_field,
+	is_system_update,
+	protect_fields,
+	revoke_previous_owner,
+)
 from pakkmaxx_crm.events.lead import normalize_contact_fields
 from pakkmaxx_crm.setup.custom_fields import COMPUTED_DEAL_FIELDS
 from pakkmaxx_crm.utils import can_assign_records
 
 NON_NEGATIVE = ("deal_value", "expected_deal_value", "pkx_deal_volume_cbm", "pkx_deal_weight_kg")
+
+
+def before_validate(doc, method=None):
+	# before Frappe CRM's validate, which assigns/shares on an owner change
+	guard_owner_field(doc, "deal_owner", _("Deal Owner"))
 
 
 def validate(doc, method=None):
@@ -22,7 +33,6 @@ def validate(doc, method=None):
 			)
 			or {}
 		)
-	guard_owner_field(doc, "deal_owner", _("Deal Owner"))
 	validate_customer_link(doc)
 
 	for field in NON_NEGATIVE:
@@ -95,6 +105,7 @@ def after_insert(doc, method=None):
 
 
 def on_update(doc, method=None):
+	revoke_previous_owner(doc, "deal_owner")
 	if not doc.has_value_changed("status") and not doc.has_value_changed("deal_value"):
 		return
 	before = doc.get_doc_before_save()
