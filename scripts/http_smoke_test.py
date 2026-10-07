@@ -106,10 +106,11 @@ status, body = kwame.req("PUT", f"/api/resource/CRM Lead/{urllib.parse.quote(lea
 check("rep cannot skip workflow stages", status in (403, 417), str(status))
 status, body = kwame.req("PUT", "/api/resource/CRM Deal Status/Won", {"probability": 10})
 check("rep cannot edit pipeline", status == 403, str(status))
-status, body = kwame.req("PUT", "/api/resource/User/kwame@pakkmaxx.local", {"roles": [{"role": "System Manager"}]})
-status2, me = kwame.req("GET", "/api/method/frappe.auth.get_logged_user")
-_, roles = manager.req("GET", "/api/method/frappe.core.doctype.user.user.get_roles?arg=kwame@pakkmaxx.local")
-check("rep cannot grant themselves System Manager", "System Manager" not in json.dumps(roles), str(roles)[:200])
+# privilege escalation: try to add System Manager, then prove it had no effect
+kwame.req("PUT", "/api/resource/User/kwame@pakkmaxx.local", {"roles": [{"role": "System Manager"}]})
+kwame_after = Client("kwame@pakkmaxx.local")  # fresh session picks up any role change
+status, _ = kwame_after.req("GET", "/api/resource/System Settings/System Settings")
+check("rep cannot grant themselves System Manager", status == 403, str(status))
 
 # Team manager / CRM manager / read only
 status, body = teamlead.req("GET", f"/api/resource/CRM Lead/{urllib.parse.quote(lead)}")
