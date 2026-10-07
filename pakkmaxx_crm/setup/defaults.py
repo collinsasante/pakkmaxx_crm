@@ -192,6 +192,13 @@ def setup_currency():
 		settings.brand_name = "Pakkmaxx CRM"
 	settings.flags.ignore_permissions = True
 	settings.save()
+	# Ghana time: follow-up due times and reminders depend on the site time zone
+	system = frappe.get_single("System Settings")
+	if not system.time_zone or not system.country:
+		system.time_zone = system.time_zone or "Africa/Accra"
+		system.country = system.country or "Ghana"
+		system.flags.ignore_mandatory = True
+		system.save(ignore_permissions=True)
 	frappe.db.set_default("currency", frappe.db.get_default("currency") or "GHS")
 	frappe.db.set_default("country", frappe.db.get_default("country") or "Ghana")
 

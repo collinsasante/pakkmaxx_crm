@@ -65,7 +65,9 @@ DB_PASSWORD=<long random>
 HTTP_PUBLISH_PORT=127.0.0.1:8091     # behind the existing reverse proxy; 8092 for production
 ENV
 chmod 600 ~/pakkmaxx-crm-staging.env
-docker compose --env-file ~/pakkmaxx-crm-staging.env \
+# --project-name is REQUIRED here: without it `config` pins volume names to `frappe_docker_*`
+# and a second stack would mount the first stack's database volume.
+docker compose --project-name pakkmaxx-crm-staging --env-file ~/pakkmaxx-crm-staging.env \
   -f compose.yaml -f overrides/compose.mariadb.yaml -f overrides/compose.redis.yaml \
   -f overrides/compose.noproxy.yaml config > ~/pakkmaxx-crm-staging.yaml
 docker compose --project-name pakkmaxx-crm-staging -f ~/pakkmaxx-crm-staging.yaml up -d
@@ -168,5 +170,35 @@ Validate Caddy changes before reloading:
 `docker cp <file> pakkmax-caddy-1:/tmp/c && docker exec pakkmax-caddy-1 caddy validate --adapter caddyfile --config /tmp/c`
 then `docker exec pakkmax-caddy-1 caddy reload --adapter caddyfile --config /etc/caddy/Caddyfile`.
 
-Production will be a second project (`pakkmaxx-crm`, `production.env`, image from `main`) behind its own
-Caddy block for the production domain, once its DNS A record points at 169.58.1.243.
+> Staging's compose file was generated before the `--project-name` fix, so its volumes are named
+> `frappe_docker_db-data`, `frappe_docker_sites`, `frappe_docker_redis-queue-data`. They are pinned in
+> `staging-compose.yaml`; do not regenerate that file without keeping those names (or migrating the data).
+
+### Production
+
+| | Production |
+|---|---|
+| URL | https://crm.pakkmax.com (Cloudflare DNS only → 169.58.1.243; Let's Encrypt via Caddy) |
+| Compose project | `pakkmaxx-crm` — volumes `pakkmaxx-crm_db-data`, `pakkmaxx-crm_sites`, `pakkmaxx-crm_redis-queue-data` |
+| Files | `/opt/pakkmaxx-crm/production.env`, `production-compose.yaml`, `secrets/production/`, `apps.production.json` (branch `main`) |
+| Image | `pakkmaxx/crm:<date>-main-<commit>` |
+| Backups | `/opt/pakkmaxx-crm/backup.sh` via root cron at 02:45 → `/opt/pakkmaxx-crm/backups/<stamp>/` (14 days), log `/var/log/pakkmaxx-crm-backup.log` |
+
+```bash
+cd /opt/pakkmaxx-crm
+DC="docker compose --project-name pakkmaxx-crm -f production-compose.yaml"
+SITE=crm.pakkmax.com
+# generate the compose file (always with --project-name)
+docker compose --project-name pakkmaxx-crm --env-file production.env -f frappe_docker/compose.yaml \
+  -f frappe_docker/overrides/compose.mariadb.yaml -f frappe_docker/overrides/compose.redis.yaml \
+  -f compose.pakkmax-web.yaml config > production-compose.yaml
+# release: ./backup.sh, build the main image, update CUSTOM_TAG in production.env, regenerate, then
+$DC up -d && $DC exec backend bench --site $SITE migrate
+```
+
+New sites: do **not** run Frappe's Setup Wizard — Frappe CRM hooks it to create demo data. Mark setup
+complete instead (System Settings `setup_complete`, each Installed Application `is_setup_complete`), and
+check System Settings: time zone **Africa/Accra**, country Ghana, currency GHS.
+
+Off-site copies of `/opt/pakkmaxx-crm/backups` are not configured yet (add rclone to Contabo Object
+Storage / S3 / Google Drive).
