@@ -290,7 +290,7 @@
   },
   {
    "default": "price, cost, how much, rate, quote, quotation, shipping, ship, freight, sea, air, cbm, carton, cartons, kg, warehouse, delivery, deliver, import, container, pick up",
-   "description": "Comma separated. Analysis still waits for the cooldown and only runs when there are new messages.",
+   "description": "Comma separated. Triggers once the customer has sent at least 2 messages; still subject to the cooldown and only when something is new.",
    "fieldname": "ai_trigger_keywords",
    "fieldtype": "Small Text",
    "label": "Or When a Customer Message Mentions"
@@ -300,13 +300,13 @@
    "fieldtype": "Column Break"
   },
   {
-   "default": "120",
+   "default": "30",
    "fieldname": "ai_quiet_minutes",
    "fieldtype": "Int",
    "label": "Or When the Conversation Has Been Quiet for (minutes)"
   },
   {
-   "default": "30",
+   "default": "10",
    "fieldname": "ai_cooldown_minutes",
    "fieldtype": "Int",
    "label": "Minimum Minutes Between Automatic Analyses"

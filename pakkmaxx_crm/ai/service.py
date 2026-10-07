@@ -3,7 +3,7 @@
 import json
 
 import frappe
-from frappe.utils import add_days, cint, flt, now_datetime
+from frappe.utils import add_days, cint, flt, get_datetime, now_datetime
 
 from pakkmaxx_crm.ai.context import build_context
 from pakkmaxx_crm.ai.prompt import PROMPT_VERSION, SYSTEM_PROMPT, build_user_prompt
@@ -68,6 +68,15 @@ def _fail(doc, message: str, raw: str | None = None):
 		frappe.db.set_value("CRM Lead", doc.lead, "pkx_ai_status", "Analysed", update_modified=False)
 
 
+def _clear_pending(lead: str, context_taken_at) -> dict:
+	"""Reset the new-message counter only if no customer message arrived after the conversation was read;
+	otherwise those newer messages stay pending for the next analysis."""
+	last = frappe.db.get_value("CRM Lead", lead, "pkx_ai_last_customer_message_at")
+	if last and get_datetime(last) > get_datetime(context_taken_at):
+		return {}
+	return {"pkx_ai_pending_messages": 0}
+
+
 def run_analysis(record: str, force: bool = False):
 	frappe.set_user("Administrator")  # system job; permission was checked when it was requested
 	doc = frappe.get_doc(DOCTYPE, record)
@@ -85,6 +94,7 @@ def run_analysis(record: str, force: bool = False):
 	doc.save(ignore_permissions=True)
 	frappe.db.commit()
 
+	context_taken_at = now_datetime()
 	try:
 		ctx = build_context(doc.lead, conf)
 	except Exception as exc:
@@ -108,7 +118,7 @@ def run_analysis(record: str, force: bool = False):
 	if not force and previous_hash and previous_hash == meta["context_hash"]:
 		doc.status, doc.error = "Skipped", "No new information since the previous analysis"
 		doc.save(ignore_permissions=True)
-		frappe.db.set_value("CRM Lead", doc.lead, {"pkx_ai_status": "Analysed", "pkx_ai_pending_messages": 0},
+		frappe.db.set_value("CRM Lead", doc.lead, {"pkx_ai_status": "Analysed", **_clear_pending(doc.lead, context_taken_at)},
 			update_modified=False)
 		frappe.db.commit()
 		return
@@ -191,7 +201,7 @@ def run_analysis(record: str, force: bool = False):
 			"pkx_ai_missing_information": doc.missing_information,
 			"pkx_ai_buying_signals": doc.buying_signals,
 			"pkx_ai_summary": doc.summary,
-			"pkx_ai_pending_messages": 0,
+			**_clear_pending(doc.lead, context_taken_at),
 			"pkx_ai_effective_classification": lead_links.pkx_ai_human_classification or classification,
 		},
 		update_modified=False,

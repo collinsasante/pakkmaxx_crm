@@ -34,9 +34,11 @@ def on_verzchat_message(lead: str, event: str, message: dict, conversation: dict
 	)
 	text = (message.get("content") or message.get("mediaCaption") or "").lower()
 	keyword_hit = any(re.search(rf"\b{re.escape(k)}\b", text) for k in _keywords(conf))
+	# A keyword alone in the very first message says little (customers often send several
+	# messages in a row), so keywords count from the second customer message.
 	reason = (
 		"New Customer Messages" if pending >= max(1, cint(conf.ai_min_customer_messages) or 3)
-		else "Intent Keywords" if keyword_hit
+		else "Intent Keywords" if keyword_hit and pending >= 2
 		else None
 	)
 	if reason and not _in_cooldown(lead, conf):
@@ -48,7 +50,8 @@ def analyze_quiet_conversations():
 	conf = settings()
 	if not (cint(conf.ai_enabled) and cint(conf.ai_auto_analysis)):
 		return
-	cutoff = add_to_date(now_datetime(), minutes=-(cint(conf.ai_quiet_minutes) or 120))
+	quiet = cint(conf.ai_quiet_minutes) if conf.ai_quiet_minutes is not None else 30
+	cutoff = add_to_date(now_datetime(), minutes=-quiet)
 	leads = frappe.get_all(
 		"CRM Lead",
 		filters={"pkx_ai_pending_messages": [">", 0], "pkx_ai_last_customer_message_at": ["<=", cutoff]},

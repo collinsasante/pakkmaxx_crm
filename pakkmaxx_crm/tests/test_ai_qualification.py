@@ -177,6 +177,21 @@ class TestPipeline(AITestCase):
 		d = frappe.get_doc("CRM Lead", lead)
 		self.assertEqual((d.pkx_ai_classification, d.pkx_ai_score, d.pkx_ai_status), ("Qualified", 72, "Analysed"))
 
+	def test_messages_arriving_during_analysis_stay_pending(self):
+		lead = self.whatsapp_lead()
+		frappe.db.set_value("CRM Lead", lead, "pkx_ai_pending_messages", 4)
+		late = frappe.utils.add_to_date(frappe.utils.now_datetime(), seconds=30)  # message after context was read
+		with patch("frappe.enqueue"):
+			record = service.queue_analysis(lead, "Manual")
+		def provider_then_new_message(settings):
+			frappe.db.set_value("CRM Lead", lead, "pkx_ai_last_customer_message_at", late)
+			return Stub(VALID)
+		with patch("pakkmaxx_crm.ai.service.get_provider", provider_then_new_message), patch(
+			"verzchat_crm.conversations.recent_messages", return_value=conversation_page()
+		):
+			service.run_analysis(record)
+		self.assertEqual(frappe.db.get_value("CRM Lead", lead, "pkx_ai_pending_messages"), 4)
+
 	def test_disabled_ai_queues_nothing_and_calls_nothing(self):
 		frappe.db.set_single_value("Pakkmaxx CRM Settings", "ai_enabled", 0)
 		frappe.clear_document_cache("Pakkmaxx CRM Settings", "Pakkmaxx CRM Settings")
@@ -242,8 +257,8 @@ class TestAccessAndTriggers(AITestCase):
 		lead = self.whatsapp_lead()
 		msg = lambda text: {"direction": "INBOUND", "content": text}  # noqa: E731
 		with patch("pakkmaxx_crm.ai.triggers.queue_analysis") as q:
-			triggers.on_verzchat_message(lead, "message.received", msg("hello"), {})
-			self.assertFalse(q.called)
+			triggers.on_verzchat_message(lead, "message.received", msg("Can I ship shoes?"), {})
+			self.assertFalse(q.called, "a keyword in the first message alone does not trigger")
 			triggers.on_verzchat_message(lead, "message.received", msg("How much to ship 20 cartons?"), {})
 			self.assertEqual(q.call_args[0][1], "Intent Keywords")
 			q.reset_mock()
