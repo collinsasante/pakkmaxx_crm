@@ -128,3 +128,45 @@ Create real users with the Pakkmaxx role profiles and build the CRM Sales Hierar
    image, update `CUSTOM_TAG`, `docker compose --project-name pakkmaxx-crm -f ~/pakkmaxx-crm.yaml up -d`,
    then `bench --site crm.<domain> migrate`.
 4. Rollback: previous image tag + restore the pre-release backup.
+
+## Current deployment (Contabo VPS 169.58.1.243, `vmi3434181`)
+
+This server already runs ERPNext, Mattermost, Glampack, Pakkmax WhatsApp and others. Ports 80/443 belong
+to the **Caddy** container `pakkmax-caddy-1` (config `/opt/pakkmax/Caddyfile`), which routes by container
+name over the Docker network `pakkmax_web`. Pakkmaxx CRM follows that pattern instead of publishing ports.
+
+| | Staging |
+|---|---|
+| URL | https://crm-staging.169-58-1-243.sslip.io (Let's Encrypt via Caddy; no DNS needed) |
+| Directory | `/opt/pakkmaxx-crm` (`frappe_docker/`, `apps.json`, `staging.env`, `staging-compose.yaml`, `secrets/`) |
+| Compose project | `pakkmaxx-crm-staging` — own MariaDB 11.8, Redis, volumes; only `frontend` joins `pakkmax_web` (`compose.pakkmax-web.yaml`) |
+| Image | `pakkmaxx/crm:<date>-develop-<commit>` built on the VPS from `develop` + Frappe CRM v1.86.0 |
+| Caddy block | appended to `/opt/pakkmax/Caddyfile` (backup `Caddyfile.bak-*`), proxies to `pakkmaxx-crm-staging-frontend-1:8080` |
+
+Common commands (on the VPS):
+
+```bash
+cd /opt/pakkmaxx-crm
+DC="docker compose --project-name pakkmaxx-crm-staging -f staging-compose.yaml"
+SITE=crm-staging.169-58-1-243.sslip.io
+$DC ps
+$DC exec backend bench --site $SITE backup --with-files
+$DC exec backend bench --site $SITE migrate
+
+# release a new develop build to staging
+cd frappe_docker && TAG=$(date +%Y%m%d)-develop-$(git ls-remote https://github.com/collinsasante/pakkmaxx_crm refs/heads/develop | cut -c1-7)
+docker build --build-arg=FRAPPE_BRANCH=version-16 --secret=id=apps_json,src=../apps.json \
+  --tag=pakkmaxx/crm:$TAG --file=images/layered/Containerfile . && cd ..
+sed -i "s/^CUSTOM_TAG=.*/CUSTOM_TAG=$TAG/" staging.env
+docker compose --env-file staging.env -f frappe_docker/compose.yaml -f frappe_docker/overrides/compose.mariadb.yaml \
+  -f frappe_docker/overrides/compose.redis.yaml -f compose.pakkmax-web.yaml config > staging-compose.yaml
+$DC exec backend bench --site $SITE backup --with-files
+$DC up -d && $DC exec backend bench --site $SITE migrate
+```
+
+Validate Caddy changes before reloading:
+`docker cp <file> pakkmax-caddy-1:/tmp/c && docker exec pakkmax-caddy-1 caddy validate --adapter caddyfile --config /tmp/c`
+then `docker exec pakkmax-caddy-1 caddy reload --adapter caddyfile --config /etc/caddy/Caddyfile`.
+
+Production will be a second project (`pakkmaxx-crm`, `production.env`, image from `main`) behind its own
+Caddy block for the production domain, once its DNS A record points at 169.58.1.243.
