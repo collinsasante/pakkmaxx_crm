@@ -32,7 +32,7 @@ def make_user(email: str, profile: str):
 	if not frappe.db.exists("User", email):
 		user = frappe.get_doc(
 			{"doctype": "User", "email": email, "first_name": email.split("@")[0], "send_welcome_email": 0,
-				"role_profile_name": profile}
+				"role_profiles": [{"role_profile": profile}]}
 		)
 		user.insert(ignore_permissions=True)
 	return frappe.get_doc("User", email)
