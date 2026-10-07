@@ -1,7 +1,6 @@
 """Create demo/test users for local or staging (never production).
 
-    bench --site <site> execute pakkmaxx_crm.scripts_demo.create_demo_users --kwargs '{"password": "..."}'
-
+    cd frappe-bench/sites && ../env/bin/python ../apps/pakkmaxx_crm/scripts/create_demo_users.py <site> <password>
 """
 
 import sys
