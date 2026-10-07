@@ -1,0 +1,533 @@
+{
+ "charts": [
+  {
+   "chart_name": "Pakkmaxx Leads by Source",
+   "label": "Leads by Source"
+  },
+  {
+   "chart_name": "Pakkmaxx Leads by Status",
+   "label": "Leads by Status"
+  },
+  {
+   "chart_name": "Pakkmaxx New Leads Trend",
+   "label": "New Leads Trend"
+  },
+  {
+   "chart_name": "Pakkmaxx Opportunities by Stage",
+   "label": "Opportunities by Stage"
+  },
+  {
+   "chart_name": "Pakkmaxx Customers by Source",
+   "label": "Customers by Source"
+  },
+  {
+   "chart_name": "Pakkmaxx Customers by Lifecycle",
+   "label": "Customers by Lifecycle"
+  }
+ ],
+ "content": "[{\"id\": \"pkx001\", \"type\": \"header\", \"data\": {\"text\": \"\\u003cspan class=\\\"h4\\\"\\u003e\\u003cb\\u003ePakkmaxx CRM\\u003c/b\\u003e\\u003c/span\\u003e\", \"col\": 12}}, {\"id\": \"pkx002\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Leads\", \"col\": 3}}, {\"id\": \"pkx003\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Opportunities\", \"col\": 3}}, {\"id\": \"pkx004\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Customers\", \"col\": 3}}, {\"id\": \"pkx005\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Follow-ups\", \"col\": 3}}, {\"id\": \"pkx006\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Lead Source Attribution\", \"col\": 3}}, {\"id\": \"pkx007\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Sales Performance\", \"col\": 3}}, {\"id\": \"pkx008\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Open CRM App\", \"col\": 3}}, {\"id\": \"pkx009\", \"type\": \"header\", \"data\": {\"text\": \"\\u003cspan class=\\\"h5\\\"\\u003e\\u003cb\\u003eFollow-ups\\u003c/b\\u003e\\u003c/span\\u003e\", \"col\": 12}}, {\"id\": \"pkx010\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Todays Follow-ups\", \"col\": 3}}, {\"id\": \"pkx011\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Overdue Follow-ups\", \"col\": 3}}, {\"id\": \"pkx012\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Upcoming Follow-ups\", \"col\": 3}}, {\"id\": \"pkx013\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Uncontacted Leads\", \"col\": 3}}, {\"id\": \"pkx014\", \"type\": \"header\", \"data\": {\"text\": \"\\u003cspan class=\\\"h5\\\"\\u003e\\u003cb\\u003eLeads\\u003c/b\\u003e\\u003c/span\\u003e\", \"col\": 12}}, {\"id\": \"pkx015\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Total Leads\", \"col\": 3}}, {\"id\": \"pkx016\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"New Leads\", \"col\": 3}}, {\"id\": \"pkx017\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Qualified Leads\", \"col\": 3}}, {\"id\": \"pkx018\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Unassigned Leads\", \"col\": 3}}, {\"id\": \"pkx019\", \"type\": \"header\", \"data\": {\"text\": \"\\u003cspan class=\\\"h5\\\"\\u003e\\u003cb\\u003eSales\\u003c/b\\u003e\\u003c/span\\u003e\", \"col\": 12}}, {\"id\": \"pkx020\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Pipeline Value\", \"col\": 3}}, {\"id\": \"pkx021\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Weighted Pipeline\", \"col\": 3}}, {\"id\": \"pkx022\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Won Value\", \"col\": 3}}, {\"id\": \"pkx023\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Average Deal Value\", \"col\": 3}}, {\"id\": \"pkx024\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Open Opportunities\", \"col\": 3}}, {\"id\": \"pkx025\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Won Opportunities\", \"col\": 3}}, {\"id\": \"pkx026\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Lost Opportunities\", \"col\": 3}}, {\"id\": \"pkx027\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Win Rate\", \"col\": 3}}, {\"id\": \"pkx028\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Lead Conversion Rate\", \"col\": 3}}, {\"id\": \"pkx029\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Average Days to Convert\", \"col\": 3}}, {\"id\": \"pkx030\", \"type\": \"header\", \"data\": {\"text\": \"\\u003cspan class=\\\"h5\\\"\\u003e\\u003cb\\u003eCustomers\\u003c/b\\u003e\\u003c/span\\u003e\", \"col\": 12}}, {\"id\": \"pkx031\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Active Customers\", \"col\": 3}}, {\"id\": \"pkx032\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Dormant Customers\", \"col\": 3}}, {\"id\": \"pkx033\", \"type\": \"header\", \"data\": {\"text\": \"\\u003cspan class=\\\"h5\\\"\\u003e\\u003cb\\u003eSources &amp; Pipeline\\u003c/b\\u003e\\u003c/span\\u003e\", \"col\": 12}}, {\"id\": \"pkx034\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Leads by Source\", \"col\": 6}}, {\"id\": \"pkx035\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Leads by Status\", \"col\": 6}}, {\"id\": \"pkx036\", \"type\": \"chart\", \"data\": {\"chart_name\": \"New Leads Trend\", \"col\": 6}}, {\"id\": \"pkx037\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Opportunities by Stage\", \"col\": 6}}, {\"id\": \"pkx038\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Customers by Source\", \"col\": 6}}, {\"id\": \"pkx039\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Customers by Lifecycle\", \"col\": 6}}, {\"id\": \"pkx040\", \"type\": \"header\", \"data\": {\"text\": \"\\u003cspan class=\\\"h5\\\"\\u003e\\u003cb\\u003eReports &amp; Setup\\u003c/b\\u003e\\u003c/span\\u003e\", \"col\": 12}}, {\"id\": \"pkx041\", \"type\": \"card\", \"data\": {\"card_name\": \"Leads\", \"col\": 4}}, {\"id\": \"pkx042\", \"type\": \"card\", \"data\": {\"card_name\": \"Opportunities\", \"col\": 4}}, {\"id\": \"pkx043\", \"type\": \"card\", \"data\": {\"card_name\": \"Customers\", \"col\": 4}}, {\"id\": \"pkx044\", \"type\": \"card\", \"data\": {\"card_name\": \"Activities\", \"col\": 4}}, {\"id\": \"pkx045\", \"type\": \"card\", \"data\": {\"card_name\": \"Performance\", \"col\": 4}}, {\"id\": \"pkx046\", \"type\": \"card\", \"data\": {\"card_name\": \"Configuration\", \"col\": 4}}]",
+ "creation": "2026-10-07 16:00:55.536336",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "hide_custom": 0,
+ "icon": "users",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Pakkmaxx CRM",
+ "link_type": "DocType",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Leads",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "CRM Lead",
+   "link_count": 0,
+   "link_to": "CRM Lead",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Lead Analysis",
+   "link_count": 0,
+   "link_to": "Pakkmaxx Lead Analysis",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Uncontacted Leads",
+   "link_count": 0,
+   "link_to": "Pakkmaxx Uncontacted Leads",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Lead Source Attribution",
+   "link_count": 0,
+   "link_to": "Pakkmaxx Lead Source Attribution",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Opportunities",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "CRM Deal",
+   "link_count": 0,
+   "link_to": "CRM Deal",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Pipeline",
+   "link_count": 0,
+   "link_to": "Pakkmaxx Pipeline",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customers",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Pakkmaxx Customer",
+   "link_count": 0,
+   "link_to": "Pakkmaxx Customer",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Contact",
+   "link_count": 0,
+   "link_to": "Contact",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "CRM Organization",
+   "link_count": 0,
+   "link_to": "CRM Organization",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Customers",
+   "link_count": 0,
+   "link_to": "Pakkmaxx Customers",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Activities",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "CRM Task",
+   "link_count": 0,
+   "link_to": "CRM Task",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "FCRM Note",
+   "link_count": 0,
+   "link_to": "FCRM Note",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "CRM Call Log",
+   "link_count": 0,
+   "link_to": "CRM Call Log",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Follow-ups",
+   "link_count": 0,
+   "link_to": "Pakkmaxx Follow-ups",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Performance",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Performance",
+   "link_count": 0,
+   "link_to": "Pakkmaxx Sales Performance",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "CRM Sales Hierarchy",
+   "link_count": 0,
+   "link_to": "CRM Sales Hierarchy",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Configuration",
+   "link_count": 11,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Pakkmaxx CRM Settings",
+   "link_count": 0,
+   "link_to": "Pakkmaxx CRM Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "CRM Lead Source",
+   "link_count": 0,
+   "link_to": "CRM Lead Source",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "CRM Lead Status",
+   "link_count": 0,
+   "link_to": "CRM Lead Status",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "CRM Deal Status",
+   "link_count": 0,
+   "link_to": "CRM Deal Status",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "CRM Lost Reason",
+   "link_count": 0,
+   "link_to": "CRM Lost Reason",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Pakkmaxx Service",
+   "link_count": 0,
+   "link_to": "Pakkmaxx Service",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Pakkmaxx Product Category",
+   "link_count": 0,
+   "link_to": "Pakkmaxx Product Category",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Pakkmaxx Business Type",
+   "link_count": 0,
+   "link_to": "Pakkmaxx Business Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Pakkmaxx Customer Segment",
+   "link_count": 0,
+   "link_to": "Pakkmaxx Customer Segment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "UTM Campaign",
+   "link_count": 0,
+   "link_to": "UTM Campaign",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Workflow",
+   "link_count": 0,
+   "link_to": "Workflow",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-10-07 16:01:07.901980",
+ "modified_by": "Administrator",
+ "module": "Pakkmaxx CRM",
+ "name": "Pakkmaxx CRM",
+ "number_cards": [
+  {
+   "label": "Total Leads",
+   "number_card_name": "Pakkmaxx Total Leads"
+  },
+  {
+   "label": "New Leads",
+   "number_card_name": "Pakkmaxx New Leads"
+  },
+  {
+   "label": "Qualified Leads",
+   "number_card_name": "Pakkmaxx Qualified Leads"
+  },
+  {
+   "label": "Unassigned Leads",
+   "number_card_name": "Pakkmaxx Unassigned Leads"
+  },
+  {
+   "label": "Uncontacted Leads",
+   "number_card_name": "Pakkmaxx Uncontacted Leads"
+  },
+  {
+   "label": "Open Opportunities",
+   "number_card_name": "Pakkmaxx Open Opportunities"
+  },
+  {
+   "label": "Won Opportunities",
+   "number_card_name": "Pakkmaxx Won Opportunities"
+  },
+  {
+   "label": "Lost Opportunities",
+   "number_card_name": "Pakkmaxx Lost Opportunities"
+  },
+  {
+   "label": "Pipeline Value",
+   "number_card_name": "Pakkmaxx Pipeline Value"
+  },
+  {
+   "label": "Weighted Pipeline",
+   "number_card_name": "Pakkmaxx Weighted Pipeline"
+  },
+  {
+   "label": "Won Value",
+   "number_card_name": "Pakkmaxx Won Value"
+  },
+  {
+   "label": "Average Deal Value",
+   "number_card_name": "Pakkmaxx Average Deal Value"
+  },
+  {
+   "label": "Lead Conversion Rate",
+   "number_card_name": "Pakkmaxx Lead Conversion Rate"
+  },
+  {
+   "label": "Win Rate",
+   "number_card_name": "Pakkmaxx Win Rate"
+  },
+  {
+   "label": "Average Days to Convert",
+   "number_card_name": "Pakkmaxx Average Days to Convert"
+  },
+  {
+   "label": "Active Customers",
+   "number_card_name": "Pakkmaxx Active Customers"
+  },
+  {
+   "label": "Dormant Customers",
+   "number_card_name": "Pakkmaxx Dormant Customers"
+  },
+  {
+   "label": "Todays Follow-ups",
+   "number_card_name": "Pakkmaxx Todays Follow-ups"
+  },
+  {
+   "label": "Overdue Follow-ups",
+   "number_card_name": "Pakkmaxx Overdue Follow-ups"
+  },
+  {
+   "label": "Upcoming Follow-ups",
+   "number_card_name": "Pakkmaxx Upcoming Follow-ups"
+  }
+ ],
+ "owner": "Administrator",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "CRM Administrator"
+  },
+  {
+   "role": "CRM Manager"
+  },
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Sales User"
+  },
+  {
+   "role": "CRM Read Only"
+  }
+ ],
+ "sequence_id": 0.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Leads",
+   "link_to": "CRM Lead",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Opportunities",
+   "link_to": "CRM Deal",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Customers",
+   "link_to": "Pakkmaxx Customer",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Follow-ups",
+   "link_to": "CRM Task",
+   "stats_filter": "[[\"CRM Task\", \"pkx_task_type\", \"=\", \"Follow-up\"], [\"CRM Task\", \"status\", \"in\", [\"Backlog\", \"Todo\", \"In Progress\"]]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "",
+   "label": "Lead Source Attribution",
+   "link_to": "Pakkmaxx Lead Source Attribution",
+   "report_ref_doctype": "CRM Lead",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "",
+   "label": "Sales Performance",
+   "link_to": "Pakkmaxx Sales Performance",
+   "report_ref_doctype": "CRM Lead",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "",
+   "label": "Open CRM App",
+   "type": "URL",
+   "url": "/crm"
+  }
+ ],
+ "standard": 1,
+ "title": "Pakkmaxx CRM",
+ "type": "Workspace"
+}
