@@ -1,0 +1,49 @@
+{
+ "aggregate_function_based_on": "deal_value",
+ "chart_name": "Pakkmaxx Opportunities by Stage",
+ "chart_type": "Group By",
+ "creation": "2026-10-07 16:00:55.516291",
+ "currency": "GHS",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "document_type": "CRM Deal",
+ "filters_json": "[]",
+ "group_by_based_on": "status",
+ "group_by_type": "Sum",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "modified": "2026-10-07 16:01:07.865973",
+ "modified_by": "Administrator",
+ "module": "Pakkmaxx CRM",
+ "name": "Pakkmaxx Opportunities by Stage",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "CRM Administrator"
+  },
+  {
+   "role": "CRM Manager"
+  },
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Sales User"
+  },
+  {
+   "role": "CRM Read Only"
+  }
+ ],
+ "show_values_over_chart": 0,
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "y_axis": []
+}

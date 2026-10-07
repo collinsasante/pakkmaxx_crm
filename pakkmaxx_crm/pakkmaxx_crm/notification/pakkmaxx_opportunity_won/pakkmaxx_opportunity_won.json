@@ -1,0 +1,37 @@
+{
+ "attach_files": "",
+ "attach_print": 0,
+ "channel": "System Notification",
+ "condition": "doc.status == \"Won\"",
+ "condition_type": "Python",
+ "creation": "2026-10-07 16:02:38.610821",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "CRM Deal",
+ "enabled": 1,
+ "event": "Value Change",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "<p>{{ doc.deal_owner }} won <b>{{ doc.name }}</b> worth GHS {{ frappe.utils.fmt_money(doc.deal_value) }}. Source: {{ doc.source or '-' }}.</p>",
+ "message_type": "HTML",
+ "minutes_offset": 0,
+ "modified": "2026-10-07 16:02:38.610821",
+ "modified_by": "Administrator",
+ "module": "Pakkmaxx CRM",
+ "name": "Pakkmaxx Opportunity Won",
+ "notification_type": "Alert",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_role": "CRM Manager"
+  },
+  {
+   "receiver_by_role": "Sales Manager"
+  }
+ ],
+ "send_system_notification": 0,
+ "send_to_all_assignees": 0,
+ "subject": "Opportunity won: {{ doc.organization or doc.lead_name or doc.name }} (GHS {{ frappe.utils.fmt_money(doc.deal_value) }})",
+ "value_changed": "status"
+}

@@ -1,0 +1,190 @@
+{
+ "actions": [],
+ "allow_bulk_edit": 1,
+ "creation": "2026-10-07 02:18:32.271323",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "scoring_tab",
+  "enable_lead_scoring",
+  "hot_threshold",
+  "warm_threshold",
+  "scoring_rules",
+  "qualification_section",
+  "min_qualification_score",
+  "require_genuine_for_qualified",
+  "followup_tab",
+  "default_reminder_minutes",
+  "send_daily_digest",
+  "uncontacted_alert_hours",
+  "lifecycle_tab",
+  "active_window_days",
+  "dormant_after_days",
+  "high_value_threshold",
+  "data_tab",
+  "default_country_code",
+  "block_duplicate_leads"
+ ],
+ "fields": [
+  {
+   "fieldname": "scoring_tab",
+   "fieldtype": "Tab Break",
+   "label": "Lead Scoring"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_lead_scoring",
+   "fieldtype": "Check",
+   "label": "Enable Lead Scoring"
+  },
+  {
+   "default": "70",
+   "description": "Score at or above this is Hot",
+   "fieldname": "hot_threshold",
+   "fieldtype": "Int",
+   "label": "Hot Lead Threshold"
+  },
+  {
+   "default": "40",
+   "description": "Score at or above this is Warm; below is Cold",
+   "fieldname": "warm_threshold",
+   "fieldtype": "Int",
+   "label": "Warm Lead Threshold"
+  },
+  {
+   "description": "Each matching rule adds its points. Total is capped between 0 and 100.",
+   "fieldname": "scoring_rules",
+   "fieldtype": "Table",
+   "label": "Scoring Rules",
+   "options": "Pakkmaxx Lead Scoring Rule"
+  },
+  {
+   "fieldname": "qualification_section",
+   "fieldtype": "Section Break",
+   "label": "Qualification"
+  },
+  {
+   "default": "60",
+   "description": "A lead cannot move to Qualified below this score",
+   "fieldname": "min_qualification_score",
+   "fieldtype": "Percent",
+   "label": "Minimum Qualification Score (%)"
+  },
+  {
+   "default": "1",
+   "fieldname": "require_genuine_for_qualified",
+   "fieldtype": "Check",
+   "label": "Lead Must Be Confirmed Genuine To Qualify"
+  },
+  {
+   "fieldname": "followup_tab",
+   "fieldtype": "Tab Break",
+   "label": "Follow-ups"
+  },
+  {
+   "default": "30",
+   "fieldname": "default_reminder_minutes",
+   "fieldtype": "Int",
+   "label": "Default Reminder (minutes before due)"
+  },
+  {
+   "default": "1",
+   "fieldname": "send_daily_digest",
+   "fieldtype": "Check",
+   "label": "Send Daily Follow-up Digest"
+  },
+  {
+   "default": "24",
+   "fieldname": "uncontacted_alert_hours",
+   "fieldtype": "Int",
+   "label": "Uncontacted Lead Alert After (hours)"
+  },
+  {
+   "fieldname": "lifecycle_tab",
+   "fieldtype": "Tab Break",
+   "label": "Customer Lifecycle"
+  },
+  {
+   "default": "90",
+   "description": "Customer with a won opportunity within this many days is Active",
+   "fieldname": "active_window_days",
+   "fieldtype": "Int",
+   "label": "Active Customer Window (days)"
+  },
+  {
+   "default": "120",
+   "description": "Customer with no won opportunity or contact for this many days is Dormant",
+   "fieldname": "dormant_after_days",
+   "fieldtype": "Int",
+   "label": "Dormant After (days)"
+  },
+  {
+   "default": "50000",
+   "fieldname": "high_value_threshold",
+   "fieldtype": "Currency",
+   "label": "High Value Lifetime Value (GHS)",
+   "options": "GHS"
+  },
+  {
+   "fieldname": "data_tab",
+   "fieldtype": "Tab Break",
+   "label": "Data Quality"
+  },
+  {
+   "default": "233",
+   "description": "Used to normalise local numbers like 024xxxxxxx to +23324xxxxxxx",
+   "fieldname": "default_country_code",
+   "fieldtype": "Data",
+   "label": "Default Country Calling Code"
+  },
+  {
+   "default": "1",
+   "description": "Stop saving a lead whose phone, WhatsApp or email already exists unless the user confirms",
+   "fieldname": "block_duplicate_leads",
+   "fieldtype": "Check",
+   "label": "Block Duplicate Leads"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-10-07 02:18:32.271323",
+ "modified_by": "Administrator",
+ "module": "Pakkmaxx CRM",
+ "name": "Pakkmaxx CRM Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "CRM Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "CRM Manager"
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
