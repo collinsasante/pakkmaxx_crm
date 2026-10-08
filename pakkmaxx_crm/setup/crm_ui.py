@@ -327,3 +327,15 @@ def setup_ai_form_script():
 		{"doctype": "CRM Form Script", "name": name, "dt": "CRM Lead", "view": "Form", "enabled": 1, "is_standard": 0,
 			"script": AI_ACTIONS_SCRIPT}
 	).insert(ignore_permissions=True)
+
+
+def use_exact_timestamps():
+	"""Show real dates ("Thu, Oct 8, 2026 10:42 am", in each user's time zone) instead of "1 hour ago"
+	across the CRM timeline and lists, through Frappe CRM's own setting. Run once (install / patch),
+	not on every migrate, so an administrator can switch back to relative times."""
+	if not frappe.db.exists("DocType", "FCRM Settings") or not frappe.get_meta("FCRM Settings").has_field(
+		"crm_timeline_timestamp_format"
+	):
+		return
+	if (frappe.db.get_single_value("FCRM Settings", "crm_timeline_timestamp_format") or "Relative") == "Relative":
+		frappe.db.set_single_value("FCRM Settings", "crm_timeline_timestamp_format", "Exact")

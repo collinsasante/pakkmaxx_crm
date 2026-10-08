@@ -10,6 +10,7 @@ def before_install():
 
 def after_install():
 	setup()
+	crm_ui.use_exact_timestamps()  # once; administrators may switch back
 
 
 def after_migrate():
