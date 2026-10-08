@@ -2,6 +2,10 @@
 // the browser never talks to the AI provider.
 frappe.provide("pakkmaxx_crm");
 
+// Same exact format as the CRM app; stored datetimes are in the site time zone, shown in the user's.
+pakkmaxx_crm.when = (value) =>
+	value ? frappe.datetime.convert_to_user_tz(value, false).format("ddd, MMM D, YYYY h:mm a") : "";
+
 pakkmaxx_crm.ai_panel = function (frm) {
 	if (frm.is_new()) return;
 	frm.add_custom_button(__("AI Qualification"), () => pakkmaxx_crm.show_ai_panel(frm));
@@ -21,7 +25,7 @@ pakkmaxx_crm.show_ai_panel = async function (frm) {
 	if (ov.pkx_ai_human_classification) {
 		html += `<div class="alert alert-secondary"><b>${__("Human decision")}:</b> ${esc(ov.pkx_ai_human_classification)}
 			${ov.pkx_ai_human_score != null ? ` (${esc(ov.pkx_ai_human_score)}/100)` : ""} – ${esc(ov.pkx_ai_override_reason)}
-			<div class="small text-muted">${esc(ov.pkx_ai_overridden_by)} · ${esc(frappe.datetime.str_to_user(ov.pkx_ai_overridden_on))}</div></div>`;
+			<div class="small text-muted">${esc(ov.pkx_ai_overridden_by)} · ${esc(pakkmaxx_crm.when(ov.pkx_ai_overridden_on))}</div></div>`;
 	}
 	if (latest) {
 		const facts = [
@@ -34,7 +38,7 @@ pakkmaxx_crm.show_ai_panel = async function (frm) {
 				<span class="indicator-pill ${colors[latest.classification] || "gray"}" style="font-size:14px">${esc(latest.classification)}</span>
 				<span><b>${esc(latest.score)}</b> / 100</span>
 				<span class="text-muted">${__("Confidence")} ${esc(Math.round(latest.confidence))}%</span>
-				<span class="text-muted small">${esc(latest.model)} · ${esc(frappe.datetime.str_to_user(latest.analyzed_at))}</span>
+				<span class="text-muted small">${esc(latest.model)} · ${esc(pakkmaxx_crm.when(latest.analyzed_at))}</span>
 			</div>
 			<p style="margin-top:10px">${esc(latest.summary)}</p>
 			<div class="row">
@@ -50,7 +54,7 @@ pakkmaxx_crm.show_ai_panel = async function (frm) {
 	}
 	if (data.history.length) {
 		html += `<h6 style="margin-top:16px">${__("History")}</h6><table class="table table-sm small"><tr><th>${__("When")}</th><th>${__("Trigger")}</th><th>${__("Status")}</th><th>${__("Result")}</th></tr>
-			${data.history.map((h) => `<tr><td>${esc(frappe.datetime.str_to_user(h.analyzed_at || h.creation))}</td><td>${esc(h.trigger)}</td>
+			${data.history.map((h) => `<tr><td>${esc(pakkmaxx_crm.when(h.analyzed_at || h.creation))}</td><td>${esc(h.trigger)}</td>
 				<td>${esc(h.status)}${h.error && h.status !== "Completed" ? `<div class="text-muted">${esc(h.error)}</div>` : ""}</td>
 				<td>${h.classification ? `${esc(h.classification)} (${esc(h.score)})` : ""}</td></tr>`).join("")}</table>`;
 	}
