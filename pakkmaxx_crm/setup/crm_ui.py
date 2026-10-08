@@ -212,7 +212,8 @@ OLD_CONTACT_ACTIONS_SCRIPT =  """class {cls} {{
 }}"""
 
 
-CONTACT_ACTIONS_SCRIPT = """class {cls} {{
+# Previous version (WhatsApp + Call); upgraded on migrate only if unedited.
+PREV_CONTACT_ACTIONS_SCRIPT = """class {cls} {{
     onRender() {{
         const doc = this.doc
         const digits = (value) => (value || '').replace(/[^0-9]/g, '')
@@ -248,13 +249,38 @@ CONTACT_ACTIONS_SCRIPT = """class {cls} {{
 }}"""
 
 
+# Click-to-call. (The earlier click-to-WhatsApp button opened wa.me outside VerzChat, bypassing the
+# conversation history and sender attribution; WhatsApp now happens in the lead's WhatsApp Chat tab.)
+CONTACT_ACTIONS_SCRIPT = """class {cls} {{
+    onRender() {{
+        const doc = this.doc
+        const ours = ['WhatsApp', 'Call']
+        this.actions = [
+            ...(this.actions || []).filter((a) => !ours.includes(a.label)),
+            {{
+                label: 'Call',
+                icon: 'phone',
+                onClick: () => {{
+                    const number = (doc.mobile_no || doc.phone || '').replace(/[^0-9+]/g, '')
+                    if (!number) {{
+                        this.toast.error('No phone number on this record')
+                        return
+                    }}
+                    window.location.href = 'tel:' + number
+                }},
+            }},
+        ]
+    }}
+}}"""
+
+
 def setup_form_scripts():
 	for dt, cls in (("CRM Lead", "CRMLead"), ("CRM Deal", "CRMDeal")):
 		name = f"Pakkmaxx Contact Actions - {dt}"
 		if frappe.db.exists("CRM Form Script", name):
 			# upgrade only if nobody edited it: the old version replaced other scripts' actions
 			current = frappe.db.get_value("CRM Form Script", name, "script")
-			if current == OLD_CONTACT_ACTIONS_SCRIPT.format(cls=cls):
+			if current in (OLD_CONTACT_ACTIONS_SCRIPT.format(cls=cls), PREV_CONTACT_ACTIONS_SCRIPT.format(cls=cls)):
 				frappe.db.set_value("CRM Form Script", name, "script", CONTACT_ACTIONS_SCRIPT.format(cls=cls))
 			continue
 		frappe.get_doc(
