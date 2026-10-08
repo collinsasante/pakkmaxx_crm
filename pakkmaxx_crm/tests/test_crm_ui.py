@@ -18,3 +18,28 @@ class TestCRMTimestamps(IntegrationTestCase):
 		frappe.db.set_single_value("FCRM Settings", "crm_timeline_timestamp_format", "Relative")
 		setup()
 		self.assertEqual(frappe.db.get_single_value("FCRM Settings", "crm_timeline_timestamp_format"), "Relative")
+
+
+class TestContactActions(IntegrationTestCase):
+	def test_external_whatsapp_button_removed_call_kept(self):
+		import shutil
+		import subprocess
+		import tempfile
+
+		from pakkmaxx_crm.setup import crm_ui
+
+		name = "Pakkmaxx Contact Actions - CRM Lead"
+		frappe.db.set_value("CRM Form Script", name, "script", crm_ui.PREV_CONTACT_ACTIONS_SCRIPT.format(cls="CRMLead"))
+		crm_ui.setup_form_scripts()
+		script = frappe.db.get_value("CRM Form Script", name, "script")
+		self.assertNotIn("wa.me", script)
+		self.assertIn("label: 'Call'", script)
+		frappe.db.set_value("CRM Form Script", name, "script", "class CRMLead { /* edited by an administrator */ }")
+		crm_ui.setup_form_scripts()
+		self.assertIn("edited by an administrator", frappe.db.get_value("CRM Form Script", name, "script"))
+		frappe.db.set_value("CRM Form Script", name, "script", crm_ui.CONTACT_ACTIONS_SCRIPT.format(cls="CRMLead"))
+		node = shutil.which("node")
+		if node:
+			with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False) as f:
+				f.write(crm_ui.CONTACT_ACTIONS_SCRIPT.format(cls="CRMLead"))
+			self.assertEqual(subprocess.run([node, "--check", f.name], capture_output=True).returncode, 0)
