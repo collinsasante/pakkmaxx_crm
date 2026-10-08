@@ -28,4 +28,5 @@ def setup():
 	defaults.setup_workflow()
 	crm_ui.setup_layouts()
 	crm_ui.setup_form_scripts()
+	crm_ui.setup_ai_form_script()
 	frappe.clear_cache()

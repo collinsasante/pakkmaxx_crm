@@ -47,7 +47,8 @@ def lead_rows(filters=None, fields=None, extra=None) -> list:
 		"CRM Lead",
 		filters=f,
 		fields=fields or ["name", "status", "source", "lead_owner", "converted", "pkx_customer", "creation",
-			"pkx_first_contacted_on", "pkx_campaign", "pkx_business_type", "pkx_lifecycle_stage"],
+			"pkx_first_contacted_on", "pkx_campaign", "pkx_business_type", "pkx_lifecycle_stage",
+			"pkx_ai_effective_classification"],
 		limit_page_length=0,
 	)
 

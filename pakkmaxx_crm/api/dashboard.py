@@ -79,3 +79,37 @@ def summary() -> dict:
 		"follow_ups": reporting.follow_up_summary(),
 		"my_follow_ups": reporting.follow_up_summary(frappe.session.user),
 	}
+
+
+def _ai_count(filters: dict) -> int:
+	return len(frappe.get_list("CRM Lead", filters=filters, pluck="name", limit_page_length=0))
+
+
+@frappe.whitelist()
+def ai_qualified_leads(filters: dict | str | None = None) -> dict:
+	return _card(_ai_count({"pkx_ai_effective_classification": "Qualified"}))
+
+
+@frappe.whitelist()
+def ai_high_value_leads(filters: dict | str | None = None) -> dict:
+	return _card(_ai_count({"pkx_ai_effective_classification": "High Value"}))
+
+
+@frappe.whitelist()
+def ai_pending_analyses(filters: dict | str | None = None) -> dict:
+	return _card(_ai_count({"pkx_ai_status": "Pending"}))
+
+
+@frappe.whitelist()
+def ai_override_rate(filters: dict | str | None = None) -> dict:
+	analysed = frappe.get_list("CRM Lead", filters={"pkx_ai_status": "Analysed"},
+		fields=["pkx_ai_classification", "pkx_ai_human_classification"], limit_page_length=0)
+	changed = [l for l in analysed if l.pkx_ai_human_classification and l.pkx_ai_human_classification != l.pkx_ai_classification]
+	return _card(round(100 * len(changed) / len(analysed), 1) if analysed else 0, "Percent")
+
+
+@frappe.whitelist()
+def ai_failed_analyses(filters: dict | str | None = None) -> dict:
+	since = frappe.utils.add_days(frappe.utils.now_datetime(), -7)
+	return _card(len(frappe.get_list("Pakkmaxx AI Qualification", filters={"status": "Failed", "creation": [">=", since]},
+		pluck="name", limit_page_length=0)))

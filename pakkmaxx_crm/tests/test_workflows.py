@@ -67,7 +67,9 @@ class TestLeadToCustomer(PakkmaxxTestCase):
 		self.assertEqual(str(lead.pkx_next_follow_up_on), str(due))
 		self.assertEqual(lead.pkx_next_action, "Send sea freight rate")
 		buckets = my_follow_ups()
-		self.assertIn(task, [t.name for t in buckets["today"]])
+		# "in 20 minutes" can fall on tomorrow when the suite runs just before midnight
+		bucket = "today" if due.date() == frappe.utils.getdate() else "upcoming"
+		self.assertIn(task, [t.name for t in buckets[bucket]])
 
 		as_user("Administrator")
 		send_due_reminders()  # reminder time (due - 30 min) has passed

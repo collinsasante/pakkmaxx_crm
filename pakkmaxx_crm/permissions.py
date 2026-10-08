@@ -228,3 +228,21 @@ def config_permission(doc, ptype=None, user=None, debug=False):
 	if ptype in (None, "read", "select", "print", "email", "report", "export"):
 		return True
 	return is_crm_manager(user or frappe.session.user)
+
+
+
+def ai_qualification_query(user: str | None = None, doctype: str | None = None) -> str:
+	"""AI analyses are visible exactly when their lead is."""
+	user = user or frappe.session.user
+	if is_unrestricted(user):
+		return ""
+	return f"`tabPakkmaxx AI Qualification`.lead in ({visible_leads_sql(user)})"
+
+
+def ai_qualification_permission(doc, ptype=None, user=None, debug=False):
+	user = user or frappe.session.user
+	if is_unrestricted(user):
+		return True
+	if ptype not in (None, "read", "select", "print", "export", "report"):
+		return False  # records are written by the system only
+	return bool(doc.get("lead")) and bool(frappe.has_permission("CRM Lead", "read", doc.lead, user=user))
