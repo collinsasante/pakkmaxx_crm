@@ -53,3 +53,22 @@ def get_ai_panel(lead: str) -> dict:
 		"override": lead_doc,
 		"can_write": bool(frappe.has_permission("CRM Lead", "write", lead)),
 	}
+
+
+@frappe.whitelist(methods=["POST"])
+def create_follow_up_from_ai(lead: str, due: str | None = None) -> dict:
+	"""A salesperson accepts the AI's recommended next action as a follow-up task (assigned to themselves).
+	The AI never creates tasks on its own."""
+	from pakkmaxx_crm.api.followups import create_follow_up
+
+	_check(lead, "write")
+	latest = frappe.db.get_value(
+		DOCTYPE, {"lead": lead, "status": "Completed"}, ["name", "recommended_next_action"], as_dict=True,
+		order_by="analyzed_at desc",
+	)
+	if not latest or not latest.recommended_next_action:
+		frappe.throw(_("There is no AI recommendation for this lead yet"))
+	due = due or f"{frappe.utils.add_days(frappe.utils.nowdate(), 1)} 10:00:00"
+	task = create_follow_up("CRM Lead", lead, latest.recommended_next_action[:140], due, "Medium",
+		notes=_("Suggested by AI analysis {0}").format(latest.name))
+	return {"task": task, "title": latest.recommended_next_action[:140]}

@@ -270,7 +270,7 @@ def setup_form_scripts():
 		).insert(ignore_permissions=True)
 
 
-AI_ACTIONS_SCRIPT = """class CRMLead {
+OLD_AI_ACTIONS_SCRIPT = """class CRMLead {
     onRender() {
         const lead = this.doc.name
         const run = async (reanalyze) => {
@@ -287,9 +287,41 @@ AI_ACTIONS_SCRIPT = """class CRMLead {
 }"""
 
 
+AI_ACTIONS_SCRIPT = """class CRMLead {
+    onRender() {
+        const lead = this.doc.name
+        const run = async (reanalyze) => {
+            const r = await this.call('pakkmaxx_crm.ai.api.analyze_lead', { lead, reanalyze })
+            if (r && r.queued) this.toast.success('AI analysis queued - results appear in the AI Qualification section shortly')
+            else this.toast.error((r && r.message) || 'AI analysis is not available')
+        }
+        this.actions = [
+            ...(this.actions || []).filter((a) => !['Analyze Lead', 'Re-analyse', 'Follow up on AI advice'].includes(a.label)),
+            { label: 'Analyze Lead', icon: 'sparkles', onClick: () => run(false) },
+            { label: 'Re-analyse', icon: 'refresh-cw', onClick: () => run(true) },
+            {
+                label: 'Follow up on AI advice',
+                icon: 'calendar-plus',
+                onClick: async () => {
+                    try {
+                        const r = await this.call('pakkmaxx_crm.ai.api.create_follow_up_from_ai', { lead })
+                        this.toast.success('Follow-up created for tomorrow: ' + r.title)
+                    } catch (e) {
+                        this.toast.error('No AI recommendation to follow up yet')
+                    }
+                },
+            },
+        ]
+    }
+}"""
+
+
 def setup_ai_form_script():
 	name = "Pakkmaxx AI Actions - CRM Lead"
 	if frappe.db.exists("CRM Form Script", name):
+		# upgrade only an unedited copy of the previous version
+		if frappe.db.get_value("CRM Form Script", name, "script") == OLD_AI_ACTIONS_SCRIPT:
+			frappe.db.set_value("CRM Form Script", name, "script", AI_ACTIONS_SCRIPT)
 		return
 	frappe.get_doc(
 		{"doctype": "CRM Form Script", "name": name, "dt": "CRM Lead", "view": "Form", "enabled": 1, "is_standard": 0,

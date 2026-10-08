@@ -67,6 +67,15 @@ pakkmaxx_crm.show_ai_panel = async function (frm) {
 			});
 		d.set_primary_action(latest ? __("Re-analyse") : __("Analyze Lead"), () => run(Boolean(latest)));
 		if (latest) d.set_secondary_action_label(__("Analyse if changed")), d.set_secondary_action(() => run(false));
+		if (latest && latest.recommended_next_action) {
+			d.add_custom_action(__("Create follow-up from AI advice"), () =>
+				frappe.call({ method: "pakkmaxx_crm.ai.api.create_follow_up_from_ai", args: { lead: frm.docname } }).then((res) => {
+					frappe.show_alert({ message: __("Follow-up created: {0}", [esc(res.message.title)]), indicator: "green" });
+					d.hide();
+					frm.reload_doc();
+				})
+			);
+		}
 	}
 	d.show();
 };
