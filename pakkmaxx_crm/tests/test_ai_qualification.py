@@ -253,6 +253,22 @@ class TestAccessAndTriggers(AITestCase):
 		with patch("frappe.enqueue"):
 			self.assertTrue(analyze_lead(lead, reanalyze=True)["queued"])
 
+	def test_salesperson_can_turn_ai_advice_into_a_follow_up(self):
+		from pakkmaxx_crm.ai.api import create_follow_up_from_ai
+
+		lead = self.whatsapp_lead(user=REP_A)
+		as_user(REP_A)
+		self.assertRaises(frappe.ValidationError, create_follow_up_from_ai, lead)  # nothing to follow up yet
+		as_user("Administrator")
+		self.analyse(lead, Stub(VALID))
+		as_user(REP_A)
+		out = create_follow_up_from_ai(lead)
+		task = frappe.get_doc("CRM Task", out["task"])
+		self.assertEqual((task.pkx_task_type, task.assigned_to, task.reference_docname), ("Follow-up", REP_A, lead))
+		self.assertIn("carton dimensions", task.title.lower())
+		as_user(REP_B)
+		self.assertRaises(frappe.PermissionError, create_follow_up_from_ai, lead)
+
 	def test_message_triggers_count_keywords_and_cooldown(self):
 		lead = self.whatsapp_lead()
 		msg = lambda text: {"direction": "INBOUND", "content": text}  # noqa: E731
