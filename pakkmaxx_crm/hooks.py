@@ -18,6 +18,9 @@ after_migrate = ["pakkmaxx_crm.install.after_migrate"]
 # Desk form scripts (WhatsApp / call / follow-up actions in Desk)
 # ---------------------------------------------------------------
 
+# Website pages: fix for Frappe's set-password page ignoring autofilled passwords (invited users)
+web_include_js = ["/assets/pakkmaxx_crm/js/update_password_autofill.js"]
+
 doctype_js = {
 	"CRM Lead": "public/js/crm_lead.js",
 	"CRM Deal": "public/js/crm_deal.js",
