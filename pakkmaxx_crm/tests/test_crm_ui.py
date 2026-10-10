@@ -43,3 +43,18 @@ class TestContactActions(IntegrationTestCase):
 			with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False) as f:
 				f.write(crm_ui.CONTACT_ACTIONS_SCRIPT.format(cls="CRMLead"))
 			self.assertEqual(subprocess.run([node, "--check", f.name], capture_output=True).returncode, 0)
+
+
+class TestSetPasswordAutofillFix(IntegrationTestCase):
+	def test_fix_script_is_loaded_on_website_pages(self):
+		import os
+
+		self.assertIn("/assets/pakkmaxx_crm/js/update_password_autofill.js", frappe.get_hooks("web_include_js"))
+		path = frappe.get_app_path("pakkmaxx_crm", "public", "js", "update_password_autofill.js")
+		with open(path) as f:
+			script = f.read()
+		# re-runs Frappe's keyup-only check on input/change (autofill), only on the set-password page
+		self.assertIn('"/update-password"', script)
+		self.assertIn('addEventListener("input"', script)
+		self.assertIn('addEventListener("change"', script)
+		self.assertTrue(os.path.getsize(path) < 3000)
