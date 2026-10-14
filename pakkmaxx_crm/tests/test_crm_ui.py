@@ -58,3 +58,20 @@ class TestSetPasswordAutofillFix(IntegrationTestCase):
 		self.assertIn('addEventListener("input"', script)
 		self.assertIn('addEventListener("change"', script)
 		self.assertTrue(os.path.getsize(path) < 3000)
+
+
+class TestAIActionsDropdown(IntegrationTestCase):
+	def test_three_ai_buttons_become_one_dropdown_unless_edited(self):
+		from pakkmaxx_crm.setup import crm_ui
+
+		name = "Pakkmaxx AI Actions - CRM Lead"
+		frappe.db.set_value("CRM Form Script", name, "script", crm_ui.PREV_AI_ACTIONS_SCRIPT)
+		crm_ui.setup_ai_form_script()
+		script = frappe.db.get_value("CRM Form Script", name, "script")
+		self.assertIn("buttonLabel: 'AI'", script)
+		for label in ("Analyze Lead", "Re-analyse", "Follow up on AI advice"):
+			self.assertIn(f"label: '{label}'", script)
+		frappe.db.set_value("CRM Form Script", name, "script", "class CRMLead { /* edited */ }")
+		crm_ui.setup_ai_form_script()
+		self.assertIn("edited", frappe.db.get_value("CRM Form Script", name, "script"))
+		frappe.db.set_value("CRM Form Script", name, "script", crm_ui.AI_ACTIONS_SCRIPT)
